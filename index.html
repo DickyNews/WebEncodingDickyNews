@@ -44,7 +44,6 @@
             gap: 20px;
         }
 
-        /* HARD BORDER STYLE */
         .neo-card {
             background: var(--card-bg);
             border: 3.5px solid var(--border-color);
@@ -54,7 +53,6 @@
             position: relative;
         }
 
-        /* HEADER */
         .header-card {
             display: flex;
             justify-content: space-between;
@@ -116,7 +114,6 @@
             border: 1.5px solid var(--border-color);
         }
 
-        /* TITLE SECTION */
         .badge-tag {
             display: inline-block;
             background: #ff6584;
@@ -171,7 +168,6 @@
             gap: 6px;
         }
 
-        /* METHOD SELECTOR */
         .method-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -208,7 +204,6 @@
 
         .method-btn.pulse { background: #fff; }
         .method-btn.pulse .icon-box { background: var(--teal-color); }
-        
         .method-btn.forge .icon-box { background: var(--forge-color); }
         .method-btn.nova .icon-box { background: var(--nova-color); }
 
@@ -229,7 +224,6 @@
             padding: 2px 8px;
         }
 
-        /* ACTIVE DETAIL CARD */
         .active-info {
             background: #e2f9f0;
             border: 2.5px solid var(--border-color);
@@ -252,7 +246,6 @@
             line-height: 1.4;
         }
 
-        /* DROPZONE */
         .upload-zone {
             background: #ffe399;
             border: 3px dashed var(--border-color);
@@ -290,7 +283,6 @@
             letter-spacing: 1px;
         }
 
-        /* ACTION BUTTONS */
         .action-btn {
             width: 100%;
             border: 3px solid var(--border-color);
@@ -307,7 +299,6 @@
         .btn-pink { background: #ff7695; color: #121212; }
         .btn-teal { background: var(--teal-color); color: #121212; }
 
-        /* LIST & NOTES */
         .notes-card ul {
             list-style: none;
             display: flex;
@@ -336,7 +327,6 @@
             text-decoration: none;
         }
 
-        /* HOW IT WORKS STEP */
         .step-list {
             display: flex;
             flex-direction: column;
@@ -446,12 +436,12 @@
             <!-- ACTIVE METHOD INFO -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">ACTIVE</div>
-                <h4>Vague Pulse</h4>
-                <p>Video transcoding runs on your local device with a lighter processing workflow. HDR is not supported.</p>
+                <h4 id="mode-title">Vague Pulse</h4>
+                <p id="mode-desc">Video transcoding runs on your local device with a lighter processing workflow. HDR is not supported.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
-            <div class="upload-zone" onclick="document.getElementById('video-input').click()">
+            <div class="upload-zone" id="drop-zone">
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
                 <div class="upload-text">Choose video</div>
@@ -459,7 +449,7 @@
             </div>
 
             <!-- ACTION BUTTONS -->
-            <button class="action-btn btn-pink">Choose a video first</button>
+            <button class="action-btn btn-pink" id="btn-process">Choose a video first</button>
             <button class="action-btn btn-teal">TikTok Checker</button>
         </div>
 
@@ -517,5 +507,61 @@
 
     </div>
 
+    <!-- JAVASCRIPT SYSTEM -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnPulse = document.querySelector('.method-btn.pulse');
+            const btnForge = document.querySelector('.method-btn.forge');
+            const btnNova = document.querySelector('.method-btn.nova');
+            const modeTitle = document.getElementById('mode-title');
+            const modeDesc = document.getElementById('mode-desc');
+            const videoInput = document.getElementById('video-input');
+            const dropZone = document.getElementById('drop-zone');
+            const btnProcess = document.getElementById('btn-process');
+            const uploadText = document.querySelector('.upload-text');
+
+            // Switch Mode
+            function setActiveMode(selectedBtn, title, desc) {
+                [btnPulse, btnForge, btnNova].forEach(btn => {
+                    btn.classList.remove('active');
+                    const badge = btn.querySelector('.badge-aktif');
+                    if (badge) badge.remove();
+                });
+
+                selectedBtn.classList.add('active');
+                selectedBtn.insertAdjacentHTML('beforeend', '<span class="badge-aktif">AKTIF</span>');
+                
+                modeTitle.innerText = title;
+                modeDesc.innerText = desc;
+            }
+
+            btnPulse.addEventListener('click', () => {
+                setActiveMode(btnPulse, 'Vague Pulse', 'Video transcoding runs on your local device with a lighter processing workflow. HDR is not supported.');
+            });
+
+            btnForge.addEventListener('click', () => {
+                setActiveMode(btnForge, 'Vague Forge', 'Processes video on the cloud server for heavy workflows and highest render quality.');
+            });
+
+            btnNova.addEventListener('click', () => {
+                setActiveMode(btnNova, 'Vague Nova', 'Unlocked VIP Mode! Full resolution, maximum bitrate, and ultra-fast encoding active.');
+            });
+
+            // Trigger Upload
+            dropZone.addEventListener('click', () => videoInput.click());
+            btnProcess.addEventListener('click', () => videoInput.click());
+
+            // Handle Selected File
+            videoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    uploadText.innerText = file.name;
+                    btnProcess.innerText = `Process: ${file.name} (${fileSizeMB} MB)`;
+                    btnProcess.style.background = '#2ed5c3';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
