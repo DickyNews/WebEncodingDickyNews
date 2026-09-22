@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAGUE TRANSCODE - RATA KANAN MP4 ENGINE</title>
+    <title>VAGUE TRANSCODE - STABLE ENGINE</title>
     
-    <!-- 1. BYPASS COOP/COEP SECURITY GITHUB PAGES (WAJIB DI ATAS HEAD) -->
-    <script src="https://cdn.jsdelivr.net/gh/gzuidhof/coi-serviceworker@0.1.7/coi-serviceworker.min.js"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- FFMPEG WASM v0.10.1 (SINGLE/MULTI-THREAD AUTO HANDLED) -->
+    <!-- FFMPEG WASM v0.10.1 -->
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
 
     <style>
@@ -342,11 +339,11 @@
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>BYPASS SECURITY ENGINE</span>
+                    <span>STABLE ENGINE ONLINE</span>
                 </div>
             </div>
-            <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                COOP/COEP ACTIVE
+            <div class="section-label" style="margin:0; font-size:10px; background:#2ed5c3; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
+                STABLE MODE
             </div>
         </div>
 
@@ -358,7 +355,7 @@
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">FFmpeg WASM murni MP4 H.264 dengan Bypass Header Keamanan.</p>
+            <p class="sub-desc">FFmpeg WASM Single-Thread Engine (Garansi Bebas Crash & Error Header).</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -380,8 +377,8 @@
             <!-- DETAIL MODE -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
-                <h4 id="mode-title">Vague Pulse (CRF 22 - Fast 1080p)</h4>
-                <p id="mode-desc">Proses kompresi cepat, hasil tajam dan ukuran efisien.</p>
+                <h4 id="mode-title">Vague Pulse (CRF 24 - Fast)</h4>
+                <p id="mode-desc">Kompresi cepat, kualitas seimbang untuk media sosial.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
@@ -469,15 +466,15 @@
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (CRF 22 - Fast 1080p)', 'Proses kompresi cepat, hasil tajam dan ukuran efisien.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (CRF 24 - Fast)', 'Kompresi cepat, kualitas seimbang untuk media sosial.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 'Vague Forge (CRF 17 - High Visual Quality)', 'Kualitas visual jernih tinggi dengan tingkat kompresi minimal.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (CRF 18 - High Quality)', 'Kualitas visual tinggi dengan detail tajam.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 'Vague Nova (CRF 12 - RATA KANAN MENTOK)', 'Render tanpa kompromi detail visual. Hasil ultra jernih.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (CRF 14 - RATA KANAN MENTOK)', 'Render visual maksimal tanpa kompromi detail.');
             });
 
             dropZone.addEventListener('click', () => videoInput.click());
@@ -518,16 +515,17 @@
 
             async function processEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Memuat FFmpeg Engine...';
+                btnAction.innerText = 'Memuat Stable FFmpeg Engine...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Memuat modul FFmpeg WASM...\n';
+                logBox.innerText = 'Inisialisasi core FFmpeg Single-Thread...\n';
 
                 try {
                     if (!ffmpeg) {
+                        // Menggunakan Core ST (Single Thread) yang tidak butuh COOP/COEP
                         ffmpeg = createFFmpeg({
                             log: true,
-                            corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'
+                            corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js'
                         });
 
                         ffmpeg.setProgress(({ ratio }) => {
@@ -558,9 +556,9 @@
                     statusText.innerText = 'MENJALANKAN RENDER MP4...';
                     logBox.innerText += 'Menjalankan x264 encoder...\n';
 
-                    let crfVal = '22';
-                    if (currentMode === 'FORGE') crfVal = '17';
-                    if (currentMode === 'NOVA') crfVal = '12';
+                    let crfVal = '24';
+                    if (currentMode === 'FORGE') crfVal = '18';
+                    if (currentMode === 'NOVA') crfVal = '14';
 
                     await ffmpeg.run(
                         '-i', inputFilename,
@@ -568,7 +566,7 @@
                         '-crf', crfVal,
                         '-preset', 'ultrafast',
                         '-c:a', 'aac',
-                        '-b:a', '192k',
+                        '-b:a', '128k',
                         '-pix_fmt', 'yuv420p',
                         'output.mp4'
                     );
@@ -594,7 +592,6 @@
                     btnAction.innerText = 'Selesai! Proses Video Lain';
                     btnAction.style.background = '#ff7695';
 
-                    // Cleanup memory
                     try {
                         ffmpeg.FS('unlink', inputFilename);
                         ffmpeg.FS('unlink', 'output.mp4');
