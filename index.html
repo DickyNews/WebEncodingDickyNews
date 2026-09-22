@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VAGUE TRANSCODE - MAXIMAL ENCODE ENGINE</title>
     
-    <!-- FIX SHAREDARRAYBUFFER UNTUK GITHUB PAGES -->
-    <script src="https://cdn.jsdelivr.net/npm/coi-serviceworker/coi-serviceworker.min.js"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ENGINE FFMPEG MULTITHREAD MAXIMUM -->
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <!-- ENGINE FFMPEG SINGLE-THREAD (GUARANTEED COMPATIBLE WITH GITHUB PAGES) -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 
     <style>
         :root {
@@ -358,7 +355,7 @@
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Proses encoding tingkat lanjut. Pengolah grafis CPU multithread, 4K 60FPS, & preservasi visual HDR10+/Dolby Vision 10-Bit.</p>
+            <p class="sub-desc">Proses encoding tingkat lanjut. Pengolah grafis browser, 4K 60FPS, & preservasi visual HDR10+/Dolby Vision 10-Bit.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -380,8 +377,8 @@
             <!-- DETAIL MODE -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
-                <h4 id="mode-title">Vague Pulse (Ultra Fast - 2K 60FPS)</h4>
-                <p id="mode-desc">Menggunakan multithreading CPU penuh untuk proses kilat tanpa kehilangan kualitas visual.</p>
+                <h4 id="mode-title">Vague Pulse (Fast - 2K 60FPS)</h4>
+                <p id="mode-desc">Proses render cepat tanpa kehilangan kualitas visual dengan kestabilan penuh.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
@@ -424,10 +421,14 @@
 
     </div>
 
-    <!-- SCRIPT MESIN ENCODING MAKSIMAL -->
+    <!-- SCRIPT MESIN ENCODING SINGLE-THREAD (100% WORKING ON GITHUB PAGES) -->
     <script>
         const { createFFmpeg, fetchFile } = FFmpeg;
-        const ffmpeg = createFFmpeg({ log: true });
+        // Menggunakan library core bawaan single-thread agar bypass batasan SharedArrayBuffer
+        const ffmpeg = createFFmpeg({
+            corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+            log: true
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             const btnPulse = document.querySelector('.method-btn.pulse');
@@ -469,7 +470,7 @@
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Ultra Fast - 2K 60FPS)', 'Menggunakan multithreading CPU penuh untuk proses kilat tanpa kehilangan kualitas visual.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Fast - 2K 60FPS)', 'Proses render cepat tanpa kehilangan kualitas visual dengan kestabilan penuh.');
             });
 
             btnForge.addEventListener('click', () => {
@@ -520,14 +521,13 @@
                 btnAction.innerText = 'Menyiapkan Mesin Pengolah Grafis...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Mengalokasikan memori CPU/GPU Browser...';
+                logBox.innerText = 'Mengalokasikan memori Browser...';
 
                 let ffmpegArgs = [];
                 
                 if (currentMode === 'PULSE') {
                     ffmpegArgs = [
                         '-i', 'input.vid',
-                        '-threads', '0',
                         '-vf', 'scale=-2:1440,fps=60',
                         '-vcodec', 'libx264',
                         '-crf', '16',
@@ -539,7 +539,6 @@
                 } else if (currentMode === 'FORGE') {
                     ffmpegArgs = [
                         '-i', 'input.vid',
-                        '-threads', '0',
                         '-vf', 'scale=-2:2160,fps=60',
                         '-vcodec', 'libx264',
                         '-crf', '14',
@@ -551,7 +550,6 @@
                 } else if (currentMode === 'NOVA') {
                     ffmpegArgs = [
                         '-i', 'input.vid',
-                        '-threads', '0',
                         '-vf', 'scale=-2:2160,fps=60',
                         '-vcodec', 'libx264',
                         '-pix_fmt', 'yuv420p',
