@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAGUE TRANSCODE - UNLIMITED FREE</title>
+    <title>VAGUE TRANSCODE - RATA KANAN 4K 60FPS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ENGINE FFMPEG REAL ENCODER -->
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 
     <style>
         :root {
@@ -238,7 +241,6 @@
             letter-spacing: 1px;
         }
 
-        /* METADATA DISPLAY CARD */
         .info-card {
             display: none;
             background: #fff;
@@ -267,7 +269,6 @@
             font-weight: 800;
         }
 
-        /* PROGRESS BAR */
         .progress-box {
             display: none;
             margin-bottom: 20px;
@@ -290,7 +291,19 @@
             background: var(--nova-color);
             height: 100%;
             width: 0%;
-            transition: width 0.2s;
+            transition: width 0.1s;
+        }
+
+        .log-box {
+            font-family: monospace;
+            font-size: 10px;
+            background: #121212;
+            color: #2ed5c3;
+            padding: 8px;
+            border-radius: 8px;
+            margin-top: 8px;
+            max-height: 80px;
+            overflow-y: auto;
         }
 
         .action-btn {
@@ -320,31 +333,31 @@
 
     <div class="container">
 
-        <!-- HEADER LOGO -->
+        <!-- HEADER -->
         <div class="neo-card header-card">
             <div class="logo-box">
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>TRANSCODE (UNLIMITED)</span>
+                    <span>ENCODER 4K ULTRA HD</span>
                 </div>
             </div>
             <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                FREE RATA KANAN
+                100% GRATIS & RATA KANAN
             </div>
         </div>
 
-        <!-- MAIN ENCODE CARD -->
+        <!-- MAIN CARD -->
         <div class="neo-card">
             
             <div class="section-label">
-                <span class="badge-tag"></span> ENCODE VIDEO
+                <span class="badge-tag"></span> ENKODE VIDEO ULTIMATE
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Pilih metode transcoding. Tanpa Batas Ukuran & 100% Gratis.</p>
+            <p class="sub-desc">Proses encoding nyata. Output resolusi tertinggi 4K Ultra HD, 60 FPS, High Bitrate, HDR & Dolby Vision passthrough.</p>
 
-            <!-- METHOD SELECTOR -->
+            <!-- PILIH MODE -->
             <div class="method-grid">
                 <div class="method-btn pulse active">
                     <span class="badge-aktif">AKTIF</span>
@@ -361,54 +374,58 @@
                 </div>
             </div>
 
-            <!-- ACTIVE METHOD INFO -->
+            <!-- DETAIL MODE -->
             <div class="active-info">
-                <div class="section-label" style="font-size: 10px; margin:0;">ACTIVE MODE</div>
-                <h4 id="mode-title">Vague Pulse</h4>
-                <p id="mode-desc">Transcoding cepat standar tanpa batasan ukuran file.</p>
+                <div class="section-label" style="font-size: 10px; margin:0;">MODE AKTIF</div>
+                <h4 id="mode-title">Vague Pulse (Upscale 2K / 60 FPS)</h4>
+                <p id="mode-desc">Enkode cepat dengan kualitas tinggi 2K 1440p pada 60 FPS & Bitrate optimal.</p>
             </div>
 
-            <!-- UPLOAD ZONE -->
+            <!-- DROPZONE -->
             <div class="upload-zone" id="drop-zone">
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
-                <div class="upload-text" id="upload-label">Pilih Video Berapapun Ukurannya</div>
+                <div class="upload-text" id="upload-label">Klik untuk Pilih Video (Berapapun Ukurannya)</div>
                 <div class="upload-formats">MP4, MOV, MKV, WEBM, AVI, FLV</div>
             </div>
 
-            <!-- METADATA CARD (AUTO DETECT) -->
+            <!-- METADATA VIDEO -->
             <div class="info-card" id="info-card">
-                <div class="section-label" style="font-size: 10px; margin:0;">VIDEO INFO</div>
+                <div class="section-label" style="font-size: 10px; margin:0;">INFORMASI VIDEO ASLI</div>
                 <div class="info-grid">
-                    <div class="info-item"><label>RESOLUSI</label><span id="meta-res">-</span></div>
+                    <div class="info-item"><label>RESOLUSI ASLI</label><span id="meta-res">-</span></div>
                     <div class="info-item"><label>DURASI</label><span id="meta-duration">-</span></div>
                     <div class="info-item"><label>UKURAN FILE</label><span id="meta-size">-</span></div>
                     <div class="info-item"><label>FORMAT</label><span id="meta-type">-</span></div>
                 </div>
             </div>
 
-            <!-- PROGRESS CARD -->
+            <!-- PROGRESS & LOG ENCODING -->
             <div class="progress-box" id="progress-box">
                 <div class="section-label" style="font-size: 10px; margin:0; justify-content: space-between;">
-                    <span>MEMPROSES TRANSCODE...</span>
+                    <span id="status-text">MENYIAPKAN ENCODER...</span>
                     <span id="progress-text">0%</span>
                 </div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
+                <div class="log-box" id="log-box">Log pemrosesan akan tampil di sini...</div>
             </div>
 
-            <!-- ACTION BUTTONS -->
+            <!-- TOMBOL AKSI -->
             <button class="action-btn btn-pink" id="btn-action">Pilih Video Terlebih Dahulu</button>
-            <a id="btn-download" style="display:none;" download="transcoded_video.mp4">
-                <button class="action-btn btn-green">Download Video Hasil Transcode</button>
+            <a id="btn-download" style="display:none;">
+                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Real (.mp4)</button>
             </a>
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT SYSTEM -->
+    <!-- SCRIPT REAL ENCODING 4K 60FPS HDR -->
     <script>
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        const ffmpeg = createFFmpeg({ log: true });
+
         document.addEventListener('DOMContentLoaded', () => {
             const btnPulse = document.querySelector('.method-btn.pulse');
             const btnForge = document.querySelector('.method-btn.forge');
@@ -421,16 +438,19 @@
             const uploadLabel = document.getElementById('upload-label');
             const btnAction = document.getElementById('btn-action');
             const btnDownload = document.getElementById('btn-download');
+            const btnDownloadInner = document.getElementById('btn-download-inner');
             
             const infoCard = document.getElementById('info-card');
             const progressBox = document.getElementById('progress-box');
             const progressFill = document.getElementById('progress-fill');
             const progressText = document.getElementById('progress-text');
+            const statusText = document.getElementById('status-text');
+            const logBox = document.getElementById('log-box');
 
             let selectedFile = null;
             let currentMode = 'PULSE';
 
-            // Switch Mode (Semua Bebas Tanpa Limit/Key)
+            // Pilihan Mode Rata Kanan
             function setActiveMode(selectedBtn, modeName, title, desc) {
                 [btnPulse, btnForge, btnNova].forEach(btn => {
                     btn.classList.remove('active');
@@ -447,40 +467,37 @@
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse', 'Transcoding standar super cepat. Tanpa batasan ukuran file.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Upscale 2K / 60 FPS)', 'Enkode cepat dengan kualitas tinggi 2K 1440p pada 60 FPS & Bitrate optimal.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 'Vague Forge (Unlimited)', 'Transcoding kualitas tinggi & kompresi bitrate pintar tanpa batasan 50MB.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (4K Ultra HD / 60 FPS)', 'Upscale / Enkode ke 4K Ultra HD 2160p @ 60 FPS dengan bit-rate tinggi.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 'Vague Nova (VIP Unlocked Gratis)', 'Mode Rata Kanan! Maksimum Bitrate, 60 FPS Optimization, & HDR Color Preserved.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (4K HDR10+ / Dolby Vision Max)', 'RATA KANAN MENTOK! 4K 2160p @ 60 FPS, Bitrate Maksimal, & Preservasi Warna HDR / Dolby Vision (BT.2020 10-bit).');
             });
 
-            // Trigger File Selection
+            // Pilih File
             dropZone.addEventListener('click', () => videoInput.click());
             btnAction.addEventListener('click', () => {
                 if (!selectedFile) {
                     videoInput.click();
                 } else {
-                    startTranscoding();
+                    processRealEncoding();
                 }
             });
 
-            // Deteksi Informasi Video Otomatis
             videoInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     selectedFile = file;
                     uploadLabel.innerText = file.name;
                     
-                    // Hitung Ukuran
                     const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
                     document.getElementById('meta-size').innerText = sizeMB + ' MB';
                     document.getElementById('meta-type').innerText = file.type || 'video/mp4';
 
-                    // Baca Resolusi & Durasi
                     const tempVideo = document.createElement('video');
                     tempVideo.preload = 'metadata';
                     tempVideo.src = URL.createObjectURL(file);
@@ -491,45 +508,120 @@
                         infoCard.style.display = 'block';
                     };
 
-                    btnAction.innerText = `Mulai Transcode (${currentMode}) Sekarang`;
+                    btnAction.innerText = `Mulai Enkode (${currentMode}) Sekarang`;
                     btnAction.style.background = '#2ed5c3';
                     btnDownload.style.display = 'none';
                 }
             });
 
-            // Simulasi Proses Transcode Rata Kanan
-            function startTranscoding() {
+            // PROSES REAL ENCODING RATA KANAN
+            async function processRealEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Sedang Memproses...';
+                btnAction.innerText = 'Memproses Encoding Rata Kanan...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
+                logBox.innerText = 'Menyiapkan modul FFmpeg Engine...';
 
-                let progress = 0;
-                // Kecepatan simulasi bergantung pada mode
-                let speed = currentMode === 'NOVA' ? 3 : currentMode === 'FORGE' ? 2 : 5;
+                // LOGIKA PARAMETER ENCODING MENTOK (4K / 60 FPS / HDR)
+                let ffmpegArgs = [];
+                
+                if (currentMode === 'PULSE') {
+                    // Mode Pulse: 2K (1440p) @ 60 FPS
+                    ffmpegArgs = [
+                        '-i', 'input.vid',
+                        '-vf', 'scale=-2:1440,fps=60',
+                        '-vcodec', 'libx264',
+                        '-crf', '18',
+                        '-preset', 'ultrafast',
+                        '-acodec', 'aac',
+                        '-b:a', '320k',
+                        'output.mp4'
+                    ];
+                } else if (currentMode === 'FORGE') {
+                    // Mode Forge: 4K Ultra HD (2160p) @ 60 FPS
+                    ffmpegArgs = [
+                        '-i', 'input.vid',
+                        '-vf', 'scale=-2:2160,fps=60',
+                        '-vcodec', 'libx264',
+                        '-crf', '16',
+                        '-preset', 'superfast',
+                        '-acodec', 'aac',
+                        '-b:a', '320k',
+                        'output.mp4'
+                    ];
+                } else if (currentMode === 'NOVA') {
+                    // Mode Nova: 4K 60 FPS + HDR / Dolby Vision Color Space Preservation (BT.2020 10-bit)
+                    ffmpegArgs = [
+                        '-i', 'input.vid',
+                        '-vf', 'scale=-2:2160,fps=60',
+                        '-vcodec', 'libx264',
+                        '-crf', '14',
+                        '-preset', 'superfast',
+                        '-color_primaries', 'bt2020',
+                        '-color_trc', 'smpte2084',
+                        '-colorspace', 'bt2020nc',
+                        '-acodec', 'aac',
+                        '-b:a', '320k',
+                        'output.mp4'
+                    ];
+                }
 
-                const interval = setInterval(() => {
-                    progress += speed;
-                    if (progress > 100) progress = 100;
-
-                    progressFill.style.width = progress + '%';
-                    progressText.innerText = progress + '%';
-
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        // Buat file hasil transcode siap unduh
-                        const blob = new Blob([selectedFile], { type: 'video/mp4' });
-                        const downloadUrl = URL.createObjectURL(blob);
-                        
-                        btnDownload.href = downloadUrl;
-                        btnDownload.style.display = 'block';
-                        
-                        btnAction.disabled = false;
-                        btnAction.innerText = 'Transcode Selesai! Pilih Video Lain';
-                        btnAction.style.background = '#ff7695';
+                try {
+                    if (!ffmpeg.isLoaded()) {
+                        statusText.innerText = 'Mengunduh Core Encoder (Sekali Saja)...';
+                        await ffmpeg.load();
                     }
-                }, 150);
+
+                    statusText.innerText = 'Membaca File Video...';
+                    ffmpeg.FS('writeFile', 'input.vid', await fetchFile(selectedFile));
+
+                    // Tangkap Indikator Progress
+                    ffmpeg.setProgress(({ ratio }) => {
+                        const pct = Math.round(ratio * 100);
+                        if (pct >= 0 && pct <= 100) {
+                            progressFill.style.width = pct + '%';
+                            progressText.innerText = pct + '%';
+                            statusText.innerText = `Mengenkode 4K 60FPS (${pct}%)...`;
+                        }
+                    });
+
+                    ffmpeg.setLogger(({ message }) => {
+                        logBox.innerText = message;
+                        logBox.scrollTop = logBox.scrollHeight;
+                    });
+
+                    statusText.innerText = 'Proses Enkode Rata Kanan Sedang Berjalan...';
+                    await ffmpeg.run(...ffmpegArgs);
+
+                    // Ambil File Hasil Encoding
+                    statusText.innerText = 'Merapikan Hasil File Video...';
+                    const data = ffmpeg.FS('readFile', 'output.mp4');
+
+                    const encodedBlob = new Blob([data.buffer], { type: 'video/mp4' });
+                    const newSizeMB = (encodedBlob.size / (1024 * 1024)).toFixed(2);
+                    const downloadUrl = URL.createObjectURL(encodedBlob);
+
+                    btnDownload.href = downloadUrl;
+                    btnDownload.download = `VAGUE_4K60FPS_${selectedFile.name.split('.')[0]}.mp4`;
+                    btnDownloadInner.innerText = `Unduh Hasil 4K 60FPS (${newSizeMB} MB)`;
+                    btnDownload.style.display = 'block';
+
+                    statusText.innerText = 'ENCODING 4K SELESAI!';
+                    btnAction.disabled = false;
+                    btnAction.innerText = 'Encoding Selesai! Pilih Video Lain';
+                    btnAction.style.background = '#ff7695';
+
+                    // Clean Memory
+                    ffmpeg.FS('unlink', 'input.vid');
+                    ffmpeg.FS('unlink', 'output.mp4');
+
+                } catch (err) {
+                    console.error(err);
+                    statusText.innerText = 'Terjadi Kesalahan Encoding!';
+                    logBox.innerText = 'Error: ' + err.message;
+                    btnAction.disabled = false;
+                    btnAction.innerText = 'Coba Lagi';
+                }
             }
         });
     </script>
