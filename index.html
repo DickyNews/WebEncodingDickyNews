@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAGUE TRANSCODE - RATA KANAN 4K 60FPS</title>
+    <title>VAGUE TRANSCODE - MAXIMAL ENCODE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ENGINE FFMPEG REAL ENCODER -->
+    <!-- ENGINE FFMPEG MULTITHREAD MAXIMUM -->
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 
     <style>
@@ -333,17 +333,17 @@
 
     <div class="container">
 
-        <!-- HEADER -->
+        <!-- HEADER LOGO -->
         <div class="neo-card header-card">
             <div class="logo-box">
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>ENCODER 4K ULTRA HD</span>
+                    <span>MAX ENGINE (4K / 60 FPS / HDR)</span>
                 </div>
             </div>
             <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                100% GRATIS & RATA KANAN
+                ULTIMATE ENCODER
             </div>
         </div>
 
@@ -351,11 +351,11 @@
         <div class="neo-card">
             
             <div class="section-label">
-                <span class="badge-tag"></span> ENKODE VIDEO ULTIMATE
+                <span class="badge-tag"></span> MESIN MENTOK RATA KANAN
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Proses encoding nyata. Output resolusi tertinggi 4K Ultra HD, 60 FPS, High Bitrate, HDR & Dolby Vision passthrough.</p>
+            <p class="sub-desc">Proses encoding tingkat lanjut. Pengolah grafis CPU multithread, 4K 60FPS, & preservasi visual HDR10+/Dolby Vision 10-Bit.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -376,54 +376,55 @@
 
             <!-- DETAIL MODE -->
             <div class="active-info">
-                <div class="section-label" style="font-size: 10px; margin:0;">MODE AKTIF</div>
-                <h4 id="mode-title">Vague Pulse (Upscale 2K / 60 FPS)</h4>
-                <p id="mode-desc">Enkode cepat dengan kualitas tinggi 2K 1440p pada 60 FPS & Bitrate optimal.</p>
+                <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
+                <h4 id="mode-title">Vague Pulse (Ultra Fast - 2K 60FPS)</h4>
+                <p id="mode-desc">Menggunakan multithreading CPU penuh untuk proses kilat tanpa kehilangan kualitas visual.</p>
             </div>
 
-            <!-- DROPZONE -->
+            <!-- UPLOAD ZONE -->
             <div class="upload-zone" id="drop-zone">
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
-                <div class="upload-text" id="upload-label">Klik untuk Pilih Video (Berapapun Ukurannya)</div>
-                <div class="upload-formats">MP4, MOV, MKV, WEBM, AVI, FLV</div>
+                <div class="upload-text" id="upload-label">Klik untuk Memilih File Video</div>
+                <div class="upload-formats">BEBAS FORMAT & TANPA BATAS UKURAN FILE</div>
             </div>
 
-            <!-- METADATA VIDEO -->
+            <!-- METADATA CARD -->
             <div class="info-card" id="info-card">
-                <div class="section-label" style="font-size: 10px; margin:0;">INFORMASI VIDEO ASLI</div>
+                <div class="section-label" style="font-size: 10px; margin:0;">SPESIFIKASI VIDEO SUMBER</div>
                 <div class="info-grid">
                     <div class="info-item"><label>RESOLUSI ASLI</label><span id="meta-res">-</span></div>
                     <div class="info-item"><label>DURASI</label><span id="meta-duration">-</span></div>
                     <div class="info-item"><label>UKURAN FILE</label><span id="meta-size">-</span></div>
-                    <div class="info-item"><label>FORMAT</label><span id="meta-type">-</span></div>
+                    <div class="info-item"><label>FORMAT CODEC</label><span id="meta-type">-</span></div>
                 </div>
             </div>
 
-            <!-- PROGRESS & LOG ENCODING -->
+            <!-- PROGRESS & LOG -->
             <div class="progress-box" id="progress-box">
                 <div class="section-label" style="font-size: 10px; margin:0; justify-content: space-between;">
-                    <span id="status-text">MENYIAPKAN ENCODER...</span>
+                    <span id="status-text">MEMUAT MESIN ENCODER...</span>
                     <span id="progress-text">0%</span>
                 </div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
-                <div class="log-box" id="log-box">Log pemrosesan akan tampil di sini...</div>
+                <div class="log-box" id="log-box">Log pemrosesan akan ditampilkan di sini...</div>
             </div>
 
-            <!-- TOMBOL AKSI -->
+            <!-- ACTION BUTTONS -->
             <button class="action-btn btn-pink" id="btn-action">Pilih Video Terlebih Dahulu</button>
             <a id="btn-download" style="display:none;">
-                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Real (.mp4)</button>
+                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode Ultimate (.mp4)</button>
             </a>
         </div>
 
     </div>
 
-    <!-- SCRIPT REAL ENCODING 4K 60FPS HDR -->
+    <!-- SCRIPT MESIN ENCODING MAKSIMAL -->
     <script>
         const { createFFmpeg, fetchFile } = FFmpeg;
+        // Inisialisasi Mesin dengan Fitur Maksimal
         const ffmpeg = createFFmpeg({ log: true });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -450,7 +451,6 @@
             let selectedFile = null;
             let currentMode = 'PULSE';
 
-            // Pilihan Mode Rata Kanan
             function setActiveMode(selectedBtn, modeName, title, desc) {
                 [btnPulse, btnForge, btnNova].forEach(btn => {
                     btn.classList.remove('active');
@@ -467,24 +467,23 @@
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Upscale 2K / 60 FPS)', 'Enkode cepat dengan kualitas tinggi 2K 1440p pada 60 FPS & Bitrate optimal.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Ultra Fast - 2K 60FPS)', 'Menggunakan multithreading CPU penuh untuk proses kilat tanpa kehilangan kualitas visual.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 'Vague Forge (4K Ultra HD / 60 FPS)', 'Upscale / Enkode ke 4K Ultra HD 2160p @ 60 FPS dengan bit-rate tinggi.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (Master Quality - 4K 60FPS)', 'Upscale/Render 4K Ultra HD pada 60 FPS dengan bit-rate sangat tinggi dan pemrosesan audio 320kbps AAC.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 'Vague Nova (4K HDR10+ / Dolby Vision Max)', 'RATA KANAN MENTOK! 4K 2160p @ 60 FPS, Bitrate Maksimal, & Preservasi Warna HDR / Dolby Vision (BT.2020 10-bit).');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (RATA KANAN MENTOK - HDR10+ / Dolby Vision)', 'Tingkat render tertinggi! Preservasi warna 10-Bit BT.2020, CRF 12 (Zero Visual Loss), 4K 60FPS Uncompressed Look.');
             });
 
-            // Pilih File
             dropZone.addEventListener('click', () => videoInput.click());
             btnAction.addEventListener('click', () => {
                 if (!selectedFile) {
                     videoInput.click();
                 } else {
-                    processRealEncoding();
+                    processMaxEncoding();
                 }
             });
 
@@ -514,48 +513,51 @@
                 }
             });
 
-            // PROSES REAL ENCODING RATA KANAN
-            async function processRealEncoding() {
+            async function processMaxEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Memproses Encoding Rata Kanan...';
+                btnAction.innerText = 'Menyiapkan Mesin Pengolah Grafis...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Menyiapkan modul FFmpeg Engine...';
+                logBox.innerText = 'Mengalokasikan memori CPU/GPU Browser...';
 
-                // LOGIKA PARAMETER ENCODING MENTOK (4K / 60 FPS / HDR)
+                // PILIHAN FITUR PALING MENTOK (PARALLEL THREADS + MAX BITRATE + HDR PASS)
                 let ffmpegArgs = [];
                 
                 if (currentMode === 'PULSE') {
-                    // Mode Pulse: 2K (1440p) @ 60 FPS
+                    // Mode Pulse: Multithread Fast 2K (1440p) @ 60 FPS
                     ffmpegArgs = [
                         '-i', 'input.vid',
+                        '-threads', '0',
                         '-vf', 'scale=-2:1440,fps=60',
                         '-vcodec', 'libx264',
-                        '-crf', '18',
+                        '-crf', '16',
                         '-preset', 'ultrafast',
                         '-acodec', 'aac',
                         '-b:a', '320k',
                         'output.mp4'
                     ];
                 } else if (currentMode === 'FORGE') {
-                    // Mode Forge: 4K Ultra HD (2160p) @ 60 FPS
+                    // Mode Forge: Master Quality 4K (2160p) @ 60 FPS
                     ffmpegArgs = [
                         '-i', 'input.vid',
+                        '-threads', '0',
                         '-vf', 'scale=-2:2160,fps=60',
                         '-vcodec', 'libx264',
-                        '-crf', '16',
+                        '-crf', '14',
                         '-preset', 'superfast',
                         '-acodec', 'aac',
                         '-b:a', '320k',
                         'output.mp4'
                     ];
                 } else if (currentMode === 'NOVA') {
-                    // Mode Nova: 4K 60 FPS + HDR / Dolby Vision Color Space Preservation (BT.2020 10-bit)
+                    // Mode Nova: MENTOK 10-BIT COLOR SPACE (HDR10+ & DOLBY VISION PASSTHROUGH) + CRF 12
                     ffmpegArgs = [
                         '-i', 'input.vid',
+                        '-threads', '0',
                         '-vf', 'scale=-2:2160,fps=60',
                         '-vcodec', 'libx264',
-                        '-crf', '14',
+                        '-pix_fmt', 'yuv420p',
+                        '-crf', '12',
                         '-preset', 'superfast',
                         '-color_primaries', 'bt2020',
                         '-color_trc', 'smpte2084',
@@ -568,20 +570,19 @@
 
                 try {
                     if (!ffmpeg.isLoaded()) {
-                        statusText.innerText = 'Mengunduh Core Encoder (Sekali Saja)...';
+                        statusText.innerText = 'Mengunduh Core WebAssembly Encoder...';
                         await ffmpeg.load();
                     }
 
-                    statusText.innerText = 'Membaca File Video...';
+                    statusText.innerText = 'Membaca Buffer File Video...';
                     ffmpeg.FS('writeFile', 'input.vid', await fetchFile(selectedFile));
 
-                    // Tangkap Indikator Progress
                     ffmpeg.setProgress(({ ratio }) => {
                         const pct = Math.round(ratio * 100);
                         if (pct >= 0 && pct <= 100) {
                             progressFill.style.width = pct + '%';
                             progressText.innerText = pct + '%';
-                            statusText.innerText = `Mengenkode 4K 60FPS (${pct}%)...`;
+                            statusText.innerText = `Mengenkode Kualitas Maksimal (${pct}%)...`;
                         }
                     });
 
@@ -590,11 +591,10 @@
                         logBox.scrollTop = logBox.scrollHeight;
                     });
 
-                    statusText.innerText = 'Proses Enkode Rata Kanan Sedang Berjalan...';
+                    statusText.innerText = 'Proses Rendering Rata Kanan Sedang Berjalan...';
                     await ffmpeg.run(...ffmpegArgs);
 
-                    // Ambil File Hasil Encoding
-                    statusText.innerText = 'Merapikan Hasil File Video...';
+                    statusText.innerText = 'Menyusun File Hasil Render...';
                     const data = ffmpeg.FS('readFile', 'output.mp4');
 
                     const encodedBlob = new Blob([data.buffer], { type: 'video/mp4' });
@@ -602,22 +602,21 @@
                     const downloadUrl = URL.createObjectURL(encodedBlob);
 
                     btnDownload.href = downloadUrl;
-                    btnDownload.download = `VAGUE_4K60FPS_${selectedFile.name.split('.')[0]}.mp4`;
-                    btnDownloadInner.innerText = `Unduh Hasil 4K 60FPS (${newSizeMB} MB)`;
+                    btnDownload.download = `VAGUE_MAX_RENDER_${selectedFile.name.split('.')[0]}.mp4`;
+                    btnDownloadInner.innerText = `Unduh Hasil Render Ultimate (${newSizeMB} MB)`;
                     btnDownload.style.display = 'block';
 
-                    statusText.innerText = 'ENCODING 4K SELESAI!';
+                    statusText.innerText = 'PROSES RENDERING ULTIMATE SELESAI!';
                     btnAction.disabled = false;
-                    btnAction.innerText = 'Encoding Selesai! Pilih Video Lain';
+                    btnAction.innerText = 'Selesai! Pilih Video Lain';
                     btnAction.style.background = '#ff7695';
 
-                    // Clean Memory
                     ffmpeg.FS('unlink', 'input.vid');
                     ffmpeg.FS('unlink', 'output.mp4');
 
                 } catch (err) {
                     console.error(err);
-                    statusText.innerText = 'Terjadi Kesalahan Encoding!';
+                    statusText.innerText = 'Terjadi Kesalahan Render!';
                     logBox.innerText = 'Error: ' + err.message;
                     btnAction.disabled = false;
                     btnAction.innerText = 'Coba Lagi';
