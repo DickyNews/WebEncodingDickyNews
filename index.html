@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ENGINE FFMPEG SINGLE-THREAD (GUARANTEED COMPATIBLE WITH GITHUB PAGES) -->
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <!-- ENGINE FFMPEG.JS (STANDALONE WASM - DUKUNGAN PENUH GITHUB PAGES) -->
+    <script src="https://cdn.jsdelivr.net/npm/ffmpeg.js@4.2.9003/ffmpeg-mp4.js"></script>
 
     <style>
         :root {
@@ -291,7 +291,7 @@
             background: var(--nova-color);
             height: 100%;
             width: 0%;
-            transition: width 0.1s;
+            transition: width 0.2s;
         }
 
         .log-box {
@@ -355,7 +355,7 @@
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Proses encoding tingkat lanjut. Pengolah grafis browser, 4K 60FPS, & preservasi visual HDR10+/Dolby Vision 10-Bit.</p>
+            <p class="sub-desc">Proses encoding tingkat lanjut berbasis Standalone WebAssembly. Kompatibel penuh tanpa batasan keamanan browser.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -377,8 +377,8 @@
             <!-- DETAIL MODE -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
-                <h4 id="mode-title">Vague Pulse (Fast - 2K 60FPS)</h4>
-                <p id="mode-desc">Proses render cepat tanpa kehilangan kualitas visual dengan kestabilan penuh.</p>
+                <h4 id="mode-title">Vague Pulse (Fast - 1080p 60FPS)</h4>
+                <p id="mode-desc">Proses render cepat dengan optimasi bit-rate stabil dan efisien.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
@@ -403,33 +403,26 @@
             <!-- PROGRESS & LOG -->
             <div class="progress-box" id="progress-box">
                 <div class="section-label" style="font-size: 10px; margin:0; justify-content: space-between;">
-                    <span id="status-text">MEMUAT MESIN ENCODER...</span>
+                    <span id="status-text">MENYIAPKAN FILE...</span>
                     <span id="progress-text">0%</span>
                 </div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
-                <div class="log-box" id="log-box">Log pemrosesan akan ditampilkan di sini...</div>
+                <div class="log-box" id="log-box">Status pemrosesan akan ditampilkan di sini...</div>
             </div>
 
             <!-- ACTION BUTTONS -->
             <button class="action-btn btn-pink" id="btn-action">Pilih Video Terlebih Dahulu</button>
             <a id="btn-download" style="display:none;">
-                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode Ultimate (.mp4)</button>
+                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode (.mp4)</button>
             </a>
         </div>
 
     </div>
 
-    <!-- SCRIPT MESIN ENCODING SINGLE-THREAD (100% WORKING ON GITHUB PAGES) -->
+    <!-- SCRIPT MESIN ENCODING WEBASSEMBLY FULL COMPATIBLE -->
     <script>
-        const { createFFmpeg, fetchFile } = FFmpeg;
-        // Menggunakan library core bawaan single-thread agar bypass batasan SharedArrayBuffer
-        const ffmpeg = createFFmpeg({
-            corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
-            log: true
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
             const btnPulse = document.querySelector('.method-btn.pulse');
             const btnForge = document.querySelector('.method-btn.forge');
@@ -470,23 +463,24 @@
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Fast - 2K 60FPS)', 'Proses render cepat tanpa kehilangan kualitas visual dengan kestabilan penuh.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Fast - 1080p 60FPS)', 'Proses render cepat dengan optimasi bit-rate stabil dan efisien.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 'Vague Forge (Master Quality - 4K 60FPS)', 'Upscale/Render 4K Ultra HD pada 60 FPS dengan bit-rate sangat tinggi dan pemrosesan audio 320kbps AAC.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (Master Quality - 2K Ultra)', 'Kualitas visual tinggi dengan reproduksi warna tajam dan audio jernih.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 'Vague Nova (RATA KANAN MENTOK - HDR10+ / Dolby Vision)', 'Tingkat render tertinggi! Preservasi warna 10-Bit BT.2020, CRF 12 (Zero Visual Loss), 4K 60FPS Uncompressed Look.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (RATA KANAN MENTOK - Uncompressed Visual)', 'Render maksimal tanpa kompromi visual untuk hasil akhir resolusi tinggi.');
             });
 
             dropZone.addEventListener('click', () => videoInput.click());
+            
             btnAction.addEventListener('click', () => {
                 if (!selectedFile) {
                     videoInput.click();
                 } else {
-                    processMaxEncoding();
+                    processEncoding();
                 }
             });
 
@@ -516,107 +510,87 @@
                 }
             });
 
-            async function processMaxEncoding() {
+            function processEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Menyiapkan Mesin Pengolah Grafis...';
+                btnAction.innerText = 'Menyiapkan Memori Wasm...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Mengalokasikan memori Browser...';
-
-                let ffmpegArgs = [];
                 
-                if (currentMode === 'PULSE') {
-                    ffmpegArgs = [
-                        '-i', 'input.vid',
-                        '-vf', 'scale=-2:1440,fps=60',
-                        '-vcodec', 'libx264',
-                        '-crf', '16',
-                        '-preset', 'ultrafast',
-                        '-acodec', 'aac',
-                        '-b:a', '320k',
-                        'output.mp4'
-                    ];
-                } else if (currentMode === 'FORGE') {
-                    ffmpegArgs = [
-                        '-i', 'input.vid',
-                        '-vf', 'scale=-2:2160,fps=60',
-                        '-vcodec', 'libx264',
-                        '-crf', '14',
-                        '-preset', 'superfast',
-                        '-acodec', 'aac',
-                        '-b:a', '320k',
-                        'output.mp4'
-                    ];
-                } else if (currentMode === 'NOVA') {
-                    ffmpegArgs = [
-                        '-i', 'input.vid',
-                        '-vf', 'scale=-2:2160,fps=60',
-                        '-vcodec', 'libx264',
-                        '-pix_fmt', 'yuv420p',
-                        '-crf', '12',
-                        '-preset', 'superfast',
-                        '-color_primaries', 'bt2020',
-                        '-color_trc', 'smpte2084',
-                        '-colorspace', 'bt2020nc',
-                        '-acodec', 'aac',
-                        '-b:a', '320k',
-                        'output.mp4'
-                    ];
-                }
+                progressFill.style.width = '10%';
+                progressText.innerText = '10%';
+                statusText.innerText = 'Membaca File Video...';
+                logBox.innerText = 'Membaca buffer file ke memori browser...\n';
 
-                try {
-                    if (!ffmpeg.isLoaded()) {
-                        statusText.innerText = 'Mengunduh Core WebAssembly Encoder...';
-                        await ffmpeg.load();
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const fileBuffer = new Uint8Array(reader.result);
+                    
+                    progressFill.style.width = '30%';
+                    progressText.innerText = '30%';
+                    statusText.innerText = 'Memproses Video dengan WebAssembly...';
+                    logBox.innerText += 'Menjalankan FFmpeg Engine...\n';
+
+                    let customArgs = ['-i', 'input.mp4', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '22', 'output.mp4'];
+
+                    if (currentMode === 'FORGE') {
+                        customArgs = ['-i', 'input.mp4', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '18', 'output.mp4'];
+                    } else if (currentMode === 'NOVA') {
+                        customArgs = ['-i', 'input.mp4', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '14', 'output.mp4'];
                     }
 
-                    statusText.innerText = 'Membaca Buffer File Video...';
-                    ffmpeg.FS('writeFile', 'input.vid', await fetchFile(selectedFile));
+                    setTimeout(() => {
+                        try {
+                            const result = ffmpeg({
+                                MEMFS: [{ name: 'input.mp4', data: fileBuffer }],
+                                arguments: customArgs,
+                                print: function(text) {
+                                    logBox.innerText += text + '\n';
+                                    logBox.scrollTop = logBox.scrollHeight;
+                                },
+                                printErr: function(text) {
+                                    logBox.innerText += text + '\n';
+                                    logBox.scrollTop = logBox.scrollHeight;
+                                }
+                            });
 
-                    ffmpeg.setProgress(({ ratio }) => {
-                        const pct = Math.round(ratio * 100);
-                        if (pct >= 0 && pct <= 100) {
-                            progressFill.style.width = pct + '%';
-                            progressText.innerText = pct + '%';
-                            statusText.innerText = `Mengenkode Kualitas Maksimal (${pct}%)...`;
+                            progressFill.style.width = '80%';
+                            progressText.innerText = '80%';
+                            statusText.innerText = 'Menyusun Output MP4...';
+
+                            const outBuffer = result.MEMFS[0];
+                            if (outBuffer && outBuffer.data) {
+                                const blob = new Blob([outBuffer.data], { type: 'video/mp4' });
+                                const downloadUrl = URL.createObjectURL(blob);
+                                const newSizeMB = (blob.size / (1024 * 1024)).toFixed(2);
+
+                                progressFill.style.width = '100%';
+                                progressText.innerText = '100%';
+                                statusText.innerText = 'PROSES RENDERING SELESAI!';
+                                logBox.innerText += '\n[SUCCESS] Render berhasil diselesaikan.';
+
+                                btnDownload.href = downloadUrl;
+                                btnDownload.download = `VAGUE_RENDER_${selectedFile.name.split('.')[0]}.mp4`;
+                                btnDownloadInner.innerText = `Unduh Hasil Render (${newSizeMB} MB)`;
+                                btnDownload.style.display = 'block';
+
+                                btnAction.disabled = false;
+                                btnAction.innerText = 'Selesai! Pilih Video Lain';
+                                btnAction.style.background = '#ff7695';
+                            } else {
+                                throw new Error('File output tidak ditemukan.');
+                            }
+
+                        } catch (err) {
+                            console.error(err);
+                            statusText.innerText = 'Terjadi Kesalahan Render!';
+                            logBox.innerText += '\n[ERROR] ' + err.message;
+                            btnAction.disabled = false;
+                            btnAction.innerText = 'Coba Lagi';
                         }
-                    });
+                    }, 500);
+                };
 
-                    ffmpeg.setLogger(({ message }) => {
-                        logBox.innerText = message;
-                        logBox.scrollTop = logBox.scrollHeight;
-                    });
-
-                    statusText.innerText = 'Proses Rendering Rata Kanan Sedang Berjalan...';
-                    await ffmpeg.run(...ffmpegArgs);
-
-                    statusText.innerText = 'Menyusun File Hasil Render...';
-                    const data = ffmpeg.FS('readFile', 'output.mp4');
-
-                    const encodedBlob = new Blob([data.buffer], { type: 'video/mp4' });
-                    const newSizeMB = (encodedBlob.size / (1024 * 1024)).toFixed(2);
-                    const downloadUrl = URL.createObjectURL(encodedBlob);
-
-                    btnDownload.href = downloadUrl;
-                    btnDownload.download = `VAGUE_MAX_RENDER_${selectedFile.name.split('.')[0]}.mp4`;
-                    btnDownloadInner.innerText = `Unduh Hasil Render Ultimate (${newSizeMB} MB)`;
-                    btnDownload.style.display = 'block';
-
-                    statusText.innerText = 'PROSES RENDERING ULTIMATE SELESAI!';
-                    btnAction.disabled = false;
-                    btnAction.innerText = 'Selesai! Pilih Video Lain';
-                    btnAction.style.background = '#ff7695';
-
-                    ffmpeg.FS('unlink', 'input.vid');
-                    ffmpeg.FS('unlink', 'output.mp4');
-
-                } catch (err) {
-                    console.error(err);
-                    statusText.innerText = 'Terjadi Kesalahan Render!';
-                    logBox.innerText = 'Error: ' + err.message;
-                    btnAction.disabled = false;
-                    btnAction.innerText = 'Coba Lagi';
-                }
+                reader.readAsArrayBuffer(selectedFile);
             }
         });
     </script>
