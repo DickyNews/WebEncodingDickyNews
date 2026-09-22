@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VAGUE TRANSCODE - MAXIMAL ENCODE ENGINE</title>
     
+    <!-- FIX SHAREDARRAYBUFFER UNTUK GITHUB PAGES -->
+    <script src="https://cdn.jsdelivr.net/npm/coi-serviceworker/coi-serviceworker.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -424,7 +427,6 @@
     <!-- SCRIPT MESIN ENCODING MAKSIMAL -->
     <script>
         const { createFFmpeg, fetchFile } = FFmpeg;
-        // Inisialisasi Mesin dengan Fitur Maksimal
         const ffmpeg = createFFmpeg({ log: true });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -520,11 +522,9 @@
                 btnDownload.style.display = 'none';
                 logBox.innerText = 'Mengalokasikan memori CPU/GPU Browser...';
 
-                // PILIHAN FITUR PALING MENTOK (PARALLEL THREADS + MAX BITRATE + HDR PASS)
                 let ffmpegArgs = [];
                 
                 if (currentMode === 'PULSE') {
-                    // Mode Pulse: Multithread Fast 2K (1440p) @ 60 FPS
                     ffmpegArgs = [
                         '-i', 'input.vid',
                         '-threads', '0',
@@ -537,7 +537,6 @@
                         'output.mp4'
                     ];
                 } else if (currentMode === 'FORGE') {
-                    // Mode Forge: Master Quality 4K (2160p) @ 60 FPS
                     ffmpegArgs = [
                         '-i', 'input.vid',
                         '-threads', '0',
@@ -550,7 +549,6 @@
                         'output.mp4'
                     ];
                 } else if (currentMode === 'NOVA') {
-                    // Mode Nova: MENTOK 10-BIT COLOR SPACE (HDR10+ & DOLBY VISION PASSTHROUGH) + CRF 12
                     ffmpegArgs = [
                         '-i', 'input.vid',
                         '-threads', '0',
