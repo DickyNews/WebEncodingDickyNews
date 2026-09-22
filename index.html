@@ -3,85 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NAMA WEBSITE BARU</title>
+    <title>VAGUE TRANSCODE</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
         :root {
-            --primary: #007AFF;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #d8e3f0 100%);
-            --glass: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --text-main: #1d1d1f;
+            --bg-color: #f7e8d3;
+            --card-bg: #fffbe9;
+            --border-color: #121212;
+            --pulse-color: #ffaa3b;
+            --forge-color: #ff6584;
+            --nova-color: #bbf246;
+            --teal-color: #2ed5c3;
+            --shadow-hard: 5px 5px 0px #121212;
+            --shadow-btn: 3px 3px 0px #121212;
         }
-        html, body { max-width: 100%; overflow-x: hidden; margin: 0; padding: 0; width: 100%; }
-        * { box-sizing: border-box; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main); display: flex; flex-direction: column; align-items: center; }
-        
-        #main-content { width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .bg-blur { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; background: radial-gradient(circle at var(--m-x, 50%) var(--m-y, 50%), rgba(0, 122, 255, 0.15) 0%, transparent 45%); pointer-events: none; }
-        .wrapper { width: 100%; max-width: 850px; margin: 0 auto; padding: 40px 15px; display: flex; flex-direction: column; overflow-x: hidden; }
-        
-        header { text-align: center; margin-bottom: 30px; width: 100%; }
-        h1 { font-family: 'Poppins', sans-serif; font-size: clamp(26px, 7vw, 54px); margin: 0; font-weight: 900; background: linear-gradient(to bottom, #1d1d1f 60%, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .glass-card { background: var(--glass); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); margin-bottom: 18px; width: 100%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @media (min-width: 601px) { .glass-card:hover { transform: scale(1.02) translateY(-5px); background: rgba(255, 255, 255, 0.9); } }
-        
-        .download-box { padding: 20px 22px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-        .btn-download { background: var(--primary); color: white; padding: 12px 20px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 12px; box-shadow: 0 5px 15px rgba(0, 122, 255, 0.2); white-space: nowrap; }
-        footer { text-align: center; padding: 40px 0; opacity: 0.6; font-size: 11px; width: 100%; }
 
-        @media (max-width: 600px) {
-            .wrapper { padding: 25px 12px; }
-            .download-box { flex-direction: column; text-align: center; padding: 25px 15px; }
-            .btn-download { width: 100%; }
-            h1 { font-size: 28px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--border-color);
+            display: flex;
+            justify-content: center;
+            padding: 20px 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* HARD BORDER STYLE */
+        .neo-card {
+            background: var(--card-bg);
+            border: 3.5px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-hard);
+            padding: 20px;
+            position: relative;
+        }
+
+        /* HEADER */
+        .header-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            background: var(--pulse-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 18px;
+            box-shadow: 2px 2px 0px #121212;
+        }
+
+        .logo-text h2 {
+            font-family: 'Impact', sans-serif;
+            font-size: 22px;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .logo-text span {
+            font-size: 9px;
+            font-weight: 800;
+            opacity: 0.7;
+            letter-spacing: 1.5px;
+        }
+
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 2.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 3px;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            font-weight: 800;
+            font-size: 11px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .lang-btn.active {
+            background: var(--pulse-color);
+            border: 1.5px solid var(--border-color);
+        }
+
+        /* TITLE SECTION */
+        .badge-tag {
+            display: inline-block;
+            background: #ff6584;
+            height: 10px;
+            width: 30px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-text {
+            font-family: 'Impact', sans-serif;
+            font-size: 42px;
+            letter-spacing: 1.5px;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .sub-desc {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .btn-channel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--teal-color);
+            border: 2.5px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-weight: 800;
+            font-size: 12px;
+            box-shadow: var(--shadow-btn);
+            cursor: pointer;
+            text-decoration: none;
+            color: #121212;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* METHOD SELECTOR */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .method-btn {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Impact', sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: var(--shadow-btn);
+            position: relative;
+            transition: all 0.1s;
+        }
+
+        .method-btn .icon-box {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .method-btn.pulse { background: #fff; }
+        .method-btn.pulse .icon-box { background: var(--teal-color); }
+        
+        .method-btn.forge .icon-box { background: var(--forge-color); }
+        .method-btn.nova .icon-box { background: var(--nova-color); }
+
+        .method-btn.active {
+            background: var(--pulse-color) !important;
+        }
+
+        .badge-aktif {
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: var(--nova-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 8px;
+        }
+
+        /* ACTIVE DETAIL CARD */
+        .active-info {
+            background: #e2f9f0;
+            border: 2.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .active-info h4 {
+            font-size: 14px;
+            font-weight: 800;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        .active-info p {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* DROPZONE */
+        .upload-zone {
+            background: #ffe399;
+            border: 3px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 35px 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .upload-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--teal-color);
+            border: 2.5px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+            box-shadow: 2px 2px 0px #121212;
+        }
+
+        .upload-text {
+            font-weight: 800;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .upload-formats {
+            font-size: 11px;
+            font-weight: 800;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        /* ACTION BUTTONS */
+        .action-btn {
+            width: 100%;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: var(--shadow-btn);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .btn-pink { background: #ff7695; color: #121212; }
+        .btn-teal { background: var(--teal-color); color: #121212; }
+
+        /* LIST & NOTES */
+        .notes-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .notes-card li {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.85;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .notes-card li::before {
+            content: "•";
+            font-weight: bold;
+        }
+
+        .notes-card a {
+            color: #0066cc;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* HOW IT WORKS STEP */
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .step-item {
+            background: #fff;
+            border: 2.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-num {
+            background: var(--teal-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2px 8px;
+            font-family: 'Impact', sans-serif;
+            font-size: 14px;
+        }
+
+        .step-title {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .step-desc {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.7;
+            padding-left: 2px;
+        }
+
+        .star-icon {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            color: #ff6584;
+            font-size: 20px;
+        }
+
+        @media (max-width: 500px) {
+            .method-grid { grid-template-columns: 1fr; }
+            .btn-channel { position: static; width: 100%; justify-content: center; margin-bottom: 15px; }
+            .title-text { font-size: 32px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="main-content">
-        <div class="bg-blur"></div>
-        <div class="wrapper">
+    <div class="container">
 
-            <header data-aos="zoom-out-down" style="margin-top: 25px;">
-                <h1>NOVA UNLOCKED</h1>
-                <span style="letter-spacing:2px; font-size:9px; opacity:0.6; font-weight:800; display:block; margin-top:5px;">FREE ALL PREMIUM FEATURES</span>
-            </header>
+        <!-- HEADER LOGO -->
+        <div class="neo-card header-card">
+            <div class="logo-box">
+                <div class="logo-icon"><i class="fa-solid fa-comment"></i></div>
+                <div class="logo-text">
+                    <h2>VAGUE</h2>
+                    <span>TRANSCODE</span>
+                </div>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn">ID</button>
+                <button class="lang-btn active">EN</button>
+            </div>
+        </div>
 
-            <!-- DAFTAR LINK / TOMBOL -->
-            <div class="download-list">
-                <div class="glass-card download-box" data-aos="fade-up">
-                    <span style="font-weight:600; font-size:15px;">NOVA PREMIUM VIP (GRATIS RATA KANAN)</span>
-                    <a href="URL_LINK_DOWNLOAD_NOVA" target="_blank" class="btn-download"><i class="fas fa-download"></i> DOWNLOAD</a>
+        <!-- MAIN ENCODE CARD -->
+        <div class="neo-card">
+            <a href="#" class="btn-channel"><i class="fa-brands fa-whatsapp"></i> Channel</a>
+            
+            <div class="section-label">
+                <span class="badge-tag"></span> ENCODE VIDEO
+            </div>
+            
+            <h1 class="title-text">TRANSCODE VIDEO.</h1>
+            <p class="sub-desc">Choose the method you want to use. 4K 120fps.</p>
+
+            <!-- METHOD SELECTOR -->
+            <div class="method-grid">
+                <div class="method-btn pulse active">
+                    <span class="badge-aktif">AKTIF</span>
+                    <div class="icon-box"><i class="fa-solid fa-bolt"></i></div>
+                    PULSE
+                </div>
+                <div class="method-btn forge">
+                    <div class="icon-box"><i class="fa-solid fa-fire"></i></div>
+                    FORGE
+                </div>
+                <div class="method-btn nova">
+                    <div class="icon-box"><i class="fa-solid fa-sparkles"></i></div>
+                    NOVA
                 </div>
             </div>
 
-            <footer>
-                <p>&copy; 2026 Dicky News Official. All Rights Reserved.</p>
-            </footer>
+            <!-- ACTIVE METHOD INFO -->
+            <div class="active-info">
+                <div class="section-label" style="font-size: 10px; margin:0;">ACTIVE</div>
+                <h4>Vague Pulse</h4>
+                <p>Video transcoding runs on your local device with a lighter processing workflow. HDR is not supported.</p>
+            </div>
 
+            <!-- UPLOAD ZONE -->
+            <div class="upload-zone" onclick="document.getElementById('video-input').click()">
+                <input type="file" id="video-input" style="display:none;" accept="video/*">
+                <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
+                <div class="upload-text">Choose video</div>
+                <div class="upload-formats">MP4, MOV, MKV, WEBM</div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <button class="action-btn btn-pink">Choose a video first</button>
+            <button class="action-btn btn-teal">TikTok Checker</button>
         </div>
+
+        <!-- NOTES CARD -->
+        <div class="neo-card notes-card">
+            <i class="fa-solid fa-star star-icon"></i>
+            <div class="section-label">
+                <span class="badge-tag"></span> NOTES
+            </div>
+            <ul>
+                <li>For TikTok upload guides on iPhone/Android, join <a href="#">WhatsApp Channel</a>.</li>
+                <li>Suitable for TikTok HD, Instagram HD, Reels HD, and Story HD uploads.</li>
+                <li>Video files are processed temporarily and deleted according to the retention lifecycle.</li>
+                <li>The output is returned as .mp4.</li>
+                <li>Guides and <a href="#">TikTok upload FAQ</a>.</li>
+            </ul>
+        </div>
+
+        <!-- HOW IT WORKS CARD -->
+        <div class="neo-card">
+            <i class="fa-solid fa-star star-icon"></i>
+            <div class="section-label">
+                <span class="badge-tag"></span> HOW IT WORKS
+            </div>
+            
+            <h2 class="title-text" style="font-size: 26px; margin-top: 5px;">FROM THE ORIGINAL FILE TO AN UPLOAD-READY VIDEO.</h2>
+            <p class="sub-desc" style="margin-bottom: 15px;">Vague Transcode prepares the video container for a smoother social upload workflow. The final result still depends on the source video and compression applied by the destination platform.</p>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-header">
+                        <span class="step-num">01</span>
+                        <span class="step-title">Choose a method</span>
+                    </div>
+                    <div class="step-desc">Pulse processes the video in your browser, while Forge uses the server for heavier workflows.</div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-header">
+                        <span class="step-num">02</span>
+                        <span class="step-title">Check the details</span>
+                    </div>
+                    <div class="step-desc">Before encoding, review the resolution, FPS, bitrate, codec, and file size to understand the source video.</div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-header">
+                        <span class="step-num">03</span>
+                        <span class="step-title">Download and upload</span>
+                    </div>
+                    <div class="step-desc">The result is returned as an MP4. You can check it again with TikTok Checker before uploading.</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            AOS.init({ duration: 700, once: false, mirror: true, offset: 30 });
-        });
-
-        if (!('ontouchstart' in window)) {
-            window.addEventListener('mousemove', (e) => {
-                const root = document.documentElement;
-                root.style.setProperty('--m-x', (e.clientX / window.innerWidth) * 100 + '%');
-                root.style.setProperty('--m-y', (e.clientY / window.innerHeight) * 100 + '%');
-            });
-        }
-    </script>
 </body>
 </html>
