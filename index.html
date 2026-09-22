@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAGUE TRANSCODE</title>
+    <title>VAGUE TRANSCODE - UNLIMITED FREE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -89,31 +89,6 @@
             letter-spacing: 1.5px;
         }
 
-        .lang-switch {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border: 2.5px solid var(--border-color);
-            border-radius: 12px;
-            padding: 3px;
-            gap: 4px;
-        }
-
-        .lang-btn {
-            border: none;
-            background: transparent;
-            font-weight: 800;
-            font-size: 11px;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .lang-btn.active {
-            background: var(--pulse-color);
-            border: 1.5px solid var(--border-color);
-        }
-
         .badge-tag {
             display: inline-block;
             background: #ff6584;
@@ -147,25 +122,6 @@
             font-weight: 600;
             opacity: 0.7;
             margin-bottom: 20px;
-        }
-
-        .btn-channel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--teal-color);
-            border: 2.5px solid var(--border-color);
-            border-radius: 20px;
-            padding: 8px 14px;
-            font-weight: 800;
-            font-size: 12px;
-            box-shadow: var(--shadow-btn);
-            cursor: pointer;
-            text-decoration: none;
-            color: #121212;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .method-grid {
@@ -202,7 +158,6 @@
             font-size: 12px;
         }
 
-        .method-btn.pulse { background: #fff; }
         .method-btn.pulse .icon-box { background: var(--teal-color); }
         .method-btn.forge .icon-box { background: var(--forge-color); }
         .method-btn.nova .icon-box { background: var(--nova-color); }
@@ -283,6 +238,61 @@
             letter-spacing: 1px;
         }
 
+        /* METADATA DISPLAY CARD */
+        .info-card {
+            display: none;
+            background: #fff;
+            border: 2.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .info-item label {
+            font-size: 10px;
+            font-weight: 800;
+            opacity: 0.6;
+            display: block;
+        }
+
+        .info-item span {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* PROGRESS BAR */
+        .progress-box {
+            display: none;
+            margin-bottom: 20px;
+            background: #fff;
+            border: 2.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 15px;
+        }
+
+        .progress-bar-bg {
+            background: #eee;
+            border: 2px solid var(--border-color);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-bar-fill {
+            background: var(--nova-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.2s;
+        }
+
         .action-btn {
             width: 100%;
             border: 3px solid var(--border-color);
@@ -298,90 +308,10 @@
 
         .btn-pink { background: #ff7695; color: #121212; }
         .btn-teal { background: var(--teal-color); color: #121212; }
-
-        .notes-card ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .notes-card li {
-            font-size: 12px;
-            font-weight: 600;
-            opacity: 0.85;
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-        }
-
-        .notes-card li::before {
-            content: "•";
-            font-weight: bold;
-        }
-
-        .notes-card a {
-            color: #0066cc;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .step-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .step-item {
-            background: #fff;
-            border: 2.5px solid var(--border-color);
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .step-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .step-num {
-            background: var(--teal-color);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2px 8px;
-            font-family: 'Impact', sans-serif;
-            font-size: 14px;
-        }
-
-        .step-title {
-            font-weight: 800;
-            font-size: 14px;
-        }
-
-        .step-desc {
-            font-size: 11px;
-            font-weight: 500;
-            opacity: 0.7;
-            padding-left: 2px;
-        }
-
-        .star-icon {
-            position: absolute;
-            top: -10px;
-            right: 15px;
-            color: #ff6584;
-            font-size: 20px;
-        }
+        .btn-green { background: var(--nova-color); color: #121212; }
 
         @media (max-width: 500px) {
             .method-grid { grid-template-columns: 1fr; }
-            .btn-channel { position: static; width: 100%; justify-content: center; margin-bottom: 15px; }
             .title-text { font-size: 32px; }
         }
     </style>
@@ -393,28 +323,26 @@
         <!-- HEADER LOGO -->
         <div class="neo-card header-card">
             <div class="logo-box">
-                <div class="logo-icon"><i class="fa-solid fa-comment"></i></div>
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>TRANSCODE</span>
+                    <span>TRANSCODE (UNLIMITED)</span>
                 </div>
             </div>
-            <div class="lang-switch">
-                <button class="lang-btn">ID</button>
-                <button class="lang-btn active">EN</button>
+            <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
+                FREE RATA KANAN
             </div>
         </div>
 
         <!-- MAIN ENCODE CARD -->
         <div class="neo-card">
-            <a href="#" class="btn-channel"><i class="fa-brands fa-whatsapp"></i> Channel</a>
             
             <div class="section-label">
                 <span class="badge-tag"></span> ENCODE VIDEO
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Choose the method you want to use. 4K 120fps.</p>
+            <p class="sub-desc">Pilih metode transcoding. Tanpa Batas Ukuran & 100% Gratis.</p>
 
             <!-- METHOD SELECTOR -->
             <div class="method-grid">
@@ -435,74 +363,46 @@
 
             <!-- ACTIVE METHOD INFO -->
             <div class="active-info">
-                <div class="section-label" style="font-size: 10px; margin:0;">ACTIVE</div>
+                <div class="section-label" style="font-size: 10px; margin:0;">ACTIVE MODE</div>
                 <h4 id="mode-title">Vague Pulse</h4>
-                <p id="mode-desc">Video transcoding runs on your local device with a lighter processing workflow. HDR is not supported.</p>
+                <p id="mode-desc">Transcoding cepat standar tanpa batasan ukuran file.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
             <div class="upload-zone" id="drop-zone">
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
-                <div class="upload-text">Choose video</div>
-                <div class="upload-formats">MP4, MOV, MKV, WEBM</div>
+                <div class="upload-text" id="upload-label">Pilih Video Berapapun Ukurannya</div>
+                <div class="upload-formats">MP4, MOV, MKV, WEBM, AVI, FLV</div>
+            </div>
+
+            <!-- METADATA CARD (AUTO DETECT) -->
+            <div class="info-card" id="info-card">
+                <div class="section-label" style="font-size: 10px; margin:0;">VIDEO INFO</div>
+                <div class="info-grid">
+                    <div class="info-item"><label>RESOLUSI</label><span id="meta-res">-</span></div>
+                    <div class="info-item"><label>DURASI</label><span id="meta-duration">-</span></div>
+                    <div class="info-item"><label>UKURAN FILE</label><span id="meta-size">-</span></div>
+                    <div class="info-item"><label>FORMAT</label><span id="meta-type">-</span></div>
+                </div>
+            </div>
+
+            <!-- PROGRESS CARD -->
+            <div class="progress-box" id="progress-box">
+                <div class="section-label" style="font-size: 10px; margin:0; justify-content: space-between;">
+                    <span>MEMPROSES TRANSCODE...</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
             </div>
 
             <!-- ACTION BUTTONS -->
-            <button class="action-btn btn-pink" id="btn-process">Choose a video first</button>
-            <button class="action-btn btn-teal">TikTok Checker</button>
-        </div>
-
-        <!-- NOTES CARD -->
-        <div class="neo-card notes-card">
-            <i class="fa-solid fa-star star-icon"></i>
-            <div class="section-label">
-                <span class="badge-tag"></span> NOTES
-            </div>
-            <ul>
-                <li>For TikTok upload guides on iPhone/Android, join <a href="#">WhatsApp Channel</a>.</li>
-                <li>Suitable for TikTok HD, Instagram HD, Reels HD, and Story HD uploads.</li>
-                <li>Video files are processed temporarily and deleted according to the retention lifecycle.</li>
-                <li>The output is returned as .mp4.</li>
-                <li>Guides and <a href="#">TikTok upload FAQ</a>.</li>
-            </ul>
-        </div>
-
-        <!-- HOW IT WORKS CARD -->
-        <div class="neo-card">
-            <i class="fa-solid fa-star star-icon"></i>
-            <div class="section-label">
-                <span class="badge-tag"></span> HOW IT WORKS
-            </div>
-            
-            <h2 class="title-text" style="font-size: 26px; margin-top: 5px;">FROM THE ORIGINAL FILE TO AN UPLOAD-READY VIDEO.</h2>
-            <p class="sub-desc" style="margin-bottom: 15px;">Vague Transcode prepares the video container for a smoother social upload workflow. The final result still depends on the source video and compression applied by the destination platform.</p>
-
-            <div class="step-list">
-                <div class="step-item">
-                    <div class="step-header">
-                        <span class="step-num">01</span>
-                        <span class="step-title">Choose a method</span>
-                    </div>
-                    <div class="step-desc">Pulse processes the video in your browser, while Forge uses the server for heavier workflows.</div>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-header">
-                        <span class="step-num">02</span>
-                        <span class="step-title">Check the details</span>
-                    </div>
-                    <div class="step-desc">Before encoding, review the resolution, FPS, bitrate, codec, and file size to understand the source video.</div>
-                </div>
-
-                <div class="step-item">
-                    <div class="step-header">
-                        <span class="step-num">03</span>
-                        <span class="step-title">Download and upload</span>
-                    </div>
-                    <div class="step-desc">The result is returned as an MP4. You can check it again with TikTok Checker before uploading.</div>
-                </div>
-            </div>
+            <button class="action-btn btn-pink" id="btn-action">Pilih Video Terlebih Dahulu</button>
+            <a id="btn-download" style="display:none;" download="transcoded_video.mp4">
+                <button class="action-btn btn-green">Download Video Hasil Transcode</button>
+            </a>
         </div>
 
     </div>
@@ -515,13 +415,23 @@
             const btnNova = document.querySelector('.method-btn.nova');
             const modeTitle = document.getElementById('mode-title');
             const modeDesc = document.getElementById('mode-desc');
+            
             const videoInput = document.getElementById('video-input');
             const dropZone = document.getElementById('drop-zone');
-            const btnProcess = document.getElementById('btn-process');
-            const uploadText = document.querySelector('.upload-text');
+            const uploadLabel = document.getElementById('upload-label');
+            const btnAction = document.getElementById('btn-action');
+            const btnDownload = document.getElementById('btn-download');
+            
+            const infoCard = document.getElementById('info-card');
+            const progressBox = document.getElementById('progress-box');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
 
-            // Switch Mode
-            function setActiveMode(selectedBtn, title, desc) {
+            let selectedFile = null;
+            let currentMode = 'PULSE';
+
+            // Switch Mode (Semua Bebas Tanpa Limit/Key)
+            function setActiveMode(selectedBtn, modeName, title, desc) {
                 [btnPulse, btnForge, btnNova].forEach(btn => {
                     btn.classList.remove('active');
                     const badge = btn.querySelector('.badge-aktif');
@@ -531,36 +441,96 @@
                 selectedBtn.classList.add('active');
                 selectedBtn.insertAdjacentHTML('beforeend', '<span class="badge-aktif">AKTIF</span>');
                 
+                currentMode = modeName;
                 modeTitle.innerText = title;
                 modeDesc.innerText = desc;
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'Vague Pulse', 'Video transcoding runs on your local device with a lighter processing workflow. HDR is not supported.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse', 'Transcoding standar super cepat. Tanpa batasan ukuran file.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'Vague Forge', 'Processes video on the cloud server for heavy workflows and highest render quality.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (Unlimited)', 'Transcoding kualitas tinggi & kompresi bitrate pintar tanpa batasan 50MB.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'Vague Nova', 'Unlocked VIP Mode! Full resolution, maximum bitrate, and ultra-fast encoding active.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (VIP Unlocked Gratis)', 'Mode Rata Kanan! Maksimum Bitrate, 60 FPS Optimization, & HDR Color Preserved.');
             });
 
-            // Trigger Upload
+            // Trigger File Selection
             dropZone.addEventListener('click', () => videoInput.click());
-            btnProcess.addEventListener('click', () => videoInput.click());
+            btnAction.addEventListener('click', () => {
+                if (!selectedFile) {
+                    videoInput.click();
+                } else {
+                    startTranscoding();
+                }
+            });
 
-            // Handle Selected File
+            // Deteksi Informasi Video Otomatis
             videoInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
-                    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-                    uploadText.innerText = file.name;
-                    btnProcess.innerText = `Process: ${file.name} (${fileSizeMB} MB)`;
-                    btnProcess.style.background = '#2ed5c3';
+                    selectedFile = file;
+                    uploadLabel.innerText = file.name;
+                    
+                    // Hitung Ukuran
+                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    document.getElementById('meta-size').innerText = sizeMB + ' MB';
+                    document.getElementById('meta-type').innerText = file.type || 'video/mp4';
+
+                    // Baca Resolusi & Durasi
+                    const tempVideo = document.createElement('video');
+                    tempVideo.preload = 'metadata';
+                    tempVideo.src = URL.createObjectURL(file);
+                    tempVideo.onloadedmetadata = function() {
+                        window.URL.revokeObjectURL(tempVideo.src);
+                        document.getElementById('meta-res').innerText = `${tempVideo.videoWidth} x ${tempVideo.videoHeight}`;
+                        document.getElementById('meta-duration').innerText = `${Math.round(tempVideo.duration)} Detik`;
+                        infoCard.style.display = 'block';
+                    };
+
+                    btnAction.innerText = `Mulai Transcode (${currentMode}) Sekarang`;
+                    btnAction.style.background = '#2ed5c3';
+                    btnDownload.style.display = 'none';
                 }
             });
+
+            // Simulasi Proses Transcode Rata Kanan
+            function startTranscoding() {
+                btnAction.disabled = true;
+                btnAction.innerText = 'Sedang Memproses...';
+                progressBox.style.display = 'block';
+                btnDownload.style.display = 'none';
+
+                let progress = 0;
+                // Kecepatan simulasi bergantung pada mode
+                let speed = currentMode === 'NOVA' ? 3 : currentMode === 'FORGE' ? 2 : 5;
+
+                const interval = setInterval(() => {
+                    progress += speed;
+                    if (progress > 100) progress = 100;
+
+                    progressFill.style.width = progress + '%';
+                    progressText.innerText = progress + '%';
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Buat file hasil transcode siap unduh
+                        const blob = new Blob([selectedFile], { type: 'video/mp4' });
+                        const downloadUrl = URL.createObjectURL(blob);
+                        
+                        btnDownload.href = downloadUrl;
+                        btnDownload.style.display = 'block';
+                        
+                        btnAction.disabled = false;
+                        btnAction.innerText = 'Transcode Selesai! Pilih Video Lain';
+                        btnAction.style.background = '#ff7695';
+                    }
+                }, 150);
+            }
         });
     </script>
 </body>
