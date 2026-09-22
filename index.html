@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NAMA WEBSITE BARU</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <style>
+        :root {
+            --primary: #007AFF;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #d8e3f0 100%);
+            --glass: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --text-main: #1d1d1f;
+        }
+        html, body { max-width: 100%; overflow-x: hidden; margin: 0; padding: 0; width: 100%; }
+        * { box-sizing: border-box; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main); display: flex; flex-direction: column; align-items: center; }
+        
+        #main-content { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .bg-blur { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; background: radial-gradient(circle at var(--m-x, 50%) var(--m-y, 50%), rgba(0, 122, 255, 0.15) 0%, transparent 45%); pointer-events: none; }
+        .wrapper { width: 100%; max-width: 850px; margin: 0 auto; padding: 40px 15px; display: flex; flex-direction: column; overflow-x: hidden; }
+        
+        header { text-align: center; margin-bottom: 30px; width: 100%; }
+        h1 { font-family: 'Poppins', sans-serif; font-size: clamp(26px, 7vw, 54px); margin: 0; font-weight: 900; background: linear-gradient(to bottom, #1d1d1f 60%, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); margin-bottom: 18px; width: 100%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @media (min-width: 601px) { .glass-card:hover { transform: scale(1.02) translateY(-5px); background: rgba(255, 255, 255, 0.9); } }
+        
+        .download-box { padding: 20px 22px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .btn-download { background: var(--primary); color: white; padding: 12px 20px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 12px; box-shadow: 0 5px 15px rgba(0, 122, 255, 0.2); white-space: nowrap; }
+        footer { text-align: center; padding: 40px 0; opacity: 0.6; font-size: 11px; width: 100%; }
+
+        @media (max-width: 600px) {
+            .wrapper { padding: 25px 12px; }
+            .download-box { flex-direction: column; text-align: center; padding: 25px 15px; }
+            .btn-download { width: 100%; }
+            h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-content">
+        <div class="bg-blur"></div>
+        <div class="wrapper">
+
+            <header data-aos="zoom-out-down" style="margin-top: 25px;">
+                <h1>NOVA UNLOCKED</h1>
+                <span style="letter-spacing:2px; font-size:9px; opacity:0.6; font-weight:800; display:block; margin-top:5px;">FREE ALL PREMIUM FEATURES</span>
+            </header>
+
+            <!-- DAFTAR LINK / TOMBOL -->
+            <div class="download-list">
+                <div class="glass-card download-box" data-aos="fade-up">
+                    <span style="font-weight:600; font-size:15px;">NOVA PREMIUM VIP (GRATIS RATA KANAN)</span>
+                    <a href="URL_LINK_DOWNLOAD_NOVA" target="_blank" class="btn-download"><i class="fas fa-download"></i> DOWNLOAD</a>
+                </div>
+            </div>
+
+            <footer>
+                <p>&copy; 2026 Dicky News Official. All Rights Reserved.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 700, once: false, mirror: true, offset: 30 });
+        });
+
+        if (!('ontouchstart' in window)) {
+            window.addEventListener('mousemove', (e) => {
+                const root = document.documentElement;
+                root.style.setProperty('--m-x', (e.clientX / window.innerWidth) * 100 + '%');
+                root.style.setProperty('--m-y', (e.clientY / window.innerHeight) * 100 + '%');
+            });
+        }
+    </script>
+</body>
+</html>
