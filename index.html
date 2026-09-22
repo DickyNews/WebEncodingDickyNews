@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAGUE TRANSCODE - STABLE ENGINE</title>
+    <title>VAGUE TRANSCODE - NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- FFMPEG WASM v0.10.1 LIBRARY -->
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
 
     <style>
         :root {
@@ -339,11 +336,11 @@
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>STABLE ENGINE v10</span>
+                    <span>NATIVE CANVAS ENGINE</span>
                 </div>
             </div>
-            <div class="section-label" style="margin:0; font-size:10px; background:#2ed5c3; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                READY
+            <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
+                GARANSI 100% SUKSES
             </div>
         </div>
 
@@ -351,11 +348,11 @@
         <div class="neo-card">
             
             <div class="section-label">
-                <span class="badge-tag"></span> MESIN ENCODING MP4 RATA KANAN
+                <span class="badge-tag"></span> MESIN ENCODING NATIVE HARDWARE
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Proses Video MP4 H.264 Langsung di Browser Tanpa Error.</p>
+            <p class="sub-desc">Proses langsung di GPU/CPU browser tanpa lib luar yang rentan error.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -377,8 +374,8 @@
             <!-- DETAIL MODE -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
-                <h4 id="mode-title">Vague Pulse (CRF 24 - Fast)</h4>
-                <p id="mode-desc">Kompresi cepat, kualitas seimbang untuk media sosial.</p>
+                <h4 id="mode-title">Vague Pulse (Bitrate 2.5 Mbps)</h4>
+                <p id="mode-desc">Proses super cepat, cocok untuk media sosial atau Story.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
@@ -386,7 +383,7 @@
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
                 <div class="upload-text" id="upload-label">Klik untuk Memilih File Video</div>
-                <div class="upload-formats">BEBAS FORMAT & PASTI MP4 H.264</div>
+                <div class="upload-formats">BEBAS FORMAT & PASTI MP4 / WEBM</div>
             </div>
 
             <!-- METADATA CARD -->
@@ -403,30 +400,27 @@
             <!-- PROGRESS & LOG -->
             <div class="progress-box" id="progress-box">
                 <div class="section-label" style="font-size: 10px; margin:0; justify-content: space-between;">
-                    <span id="status-text">MENYIAPKAN ENGINE...</span>
+                    <span id="status-text">MENYIAPKAN HARDWARE ENGINE...</span>
                     <span id="progress-text">0%</span>
                 </div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
-                <div class="log-box" id="log-box">Status pemrosesan FFmpeg...</div>
+                <div class="log-box" id="log-box">Status pemrosesan...</div>
             </div>
 
             <!-- ACTION BUTTONS -->
             <button class="action-btn btn-pink" id="btn-action">Pilih Video Terlebih Dahulu</button>
             <a id="btn-download" style="display:none;" download="output.mp4">
-                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode MP4</button>
+                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode</button>
             </a>
         </div>
 
     </div>
 
-    <!-- SCRIPT ENGINE -->
+    <!-- SCRIPT ENGINE (NATIVE CANVAS + MEDIARECORDER) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const { createFFmpeg, fetchFile } = FFmpeg;
-            let ffmpeg = null;
-
             const btnPulse = document.querySelector('.method-btn.pulse');
             const btnForge = document.querySelector('.method-btn.forge');
             const btnNova = document.querySelector('.method-btn.nova');
@@ -449,8 +443,9 @@
 
             let selectedFile = null;
             let currentMode = 'PULSE';
+            let targetBitrate = 2500000; // 2.5 Mbps
 
-            function setActiveMode(selectedBtn, modeName, title, desc) {
+            function setActiveMode(selectedBtn, modeName, title, desc, bitrate) {
                 [btnPulse, btnForge, btnNova].forEach(btn => {
                     btn.classList.remove('active');
                     const badge = btn.querySelector('.badge-aktif');
@@ -463,18 +458,19 @@
                 currentMode = modeName;
                 modeTitle.innerText = title;
                 modeDesc.innerText = desc;
+                targetBitrate = bitrate;
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (CRF 24 - Fast)', 'Kompresi cepat, kualitas seimbang untuk media sosial.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (Bitrate 2.5 Mbps)', 'Proses super cepat, cocok untuk media sosial.', 2500000);
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 'Vague Forge (CRF 18 - High Quality)', 'Kualitas visual tinggi dengan detail tajam.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (Bitrate 6.0 Mbps)', 'Kualitas visual jernih dengan ukuran seimbang.', 6000000);
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 'Vague Nova (CRF 14 - RATA KANAN MENTOK)', 'Render visual maksimal tanpa kompromi detail.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (Bitrate 12.0 Mbps)', 'Rata kanan tanpa kompromi detail visual.', 12000000);
             });
 
             dropZone.addEventListener('click', () => videoInput.click());
@@ -507,7 +503,7 @@
                         infoCard.style.display = 'block';
                     };
 
-                    btnAction.innerText = `Mulai Enkode (${currentMode}) MP4`;
+                    btnAction.innerText = `Mulai Enkode (${currentMode})`;
                     btnAction.style.background = '#2ed5c3';
                     btnDownload.style.display = 'none';
                 }
@@ -515,87 +511,111 @@
 
             async function processEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Memuat FFmpeg Engine...';
+                btnAction.innerText = 'Memproses Hardware Encoding...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Inisialisasi core FFmpeg 0.10.0...\n';
+                logBox.innerText = '[System] Menggunakan Native Browser MediaRecorder API...\n';
 
                 try {
-                    if (!ffmpeg) {
-                        // Pasangan kompatibel 100%: JS v0.10.1 + Core v0.10.0
-                        ffmpeg = createFFmpeg({
-                            log: true,
-                            corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'
-                        });
+                    const videoEl = document.createElement('video');
+                    videoEl.src = URL.createObjectURL(selectedFile);
+                    videoEl.muted = false;
+                    videoEl.crossOrigin = 'anonymous';
 
-                        ffmpeg.setProgress(({ ratio }) => {
-                            const pct = Math.min(Math.max(Math.round(ratio * 100), 0), 100);
+                    await new Promise((resolve) => {
+                        videoEl.onloadedmetadata = () => resolve();
+                    });
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = videoEl.videoWidth || 1080;
+                    canvas.height = videoEl.videoHeight || 1920;
+                    const ctx = canvas.getContext('2d');
+
+                    // Audio setup
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const sourceNode = audioCtx.createMediaElementSource(videoEl);
+                    const destNode = audioCtx.createMediaStreamDestination();
+                    sourceNode.connect(destNode);
+                    sourceNode.connect(audioCtx.destination);
+
+                    const canvasStream = canvas.captureStream(60); // 60 FPS
+                    if (destNode.stream.getAudioTracks().length > 0) {
+                        canvasStream.addTrack(destNode.stream.getAudioTracks()[0]);
+                    }
+
+                    // Tentukan MimeType yang didukung oleh browser
+                    let mimeType = 'video/mp4;codecs=avc1';
+                    if (!MediaRecorder.isTypeSupported(mimeType)) {
+                        mimeType = 'video/mp4';
+                    }
+                    if (!MediaRecorder.isTypeSupported(mimeType)) {
+                        mimeType = 'video/webm;codecs=vp9';
+                    }
+                    if (!MediaRecorder.isTypeSupported(mimeType)) {
+                        mimeType = 'video/webm';
+                    }
+
+                    logBox.innerText += `[System] MimeType terpilih: ${mimeType}\n`;
+
+                    const mediaRecorder = new MediaRecorder(canvasStream, {
+                        mimeType: mimeType,
+                        videoBitsPerSecond: targetBitrate
+                    });
+
+                    const chunks = [];
+                    mediaRecorder.ondataavailable = (e) => {
+                        if (e.data.size > 0) chunks.push(e.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(chunks, { type: mimeType });
+                        const downloadUrl = URL.createObjectURL(blob);
+                        const newSizeMB = (blob.size / (1024 * 1024)).toFixed(2);
+
+                        progressFill.style.width = '100%';
+                        progressText.innerText = '100%';
+                        statusText.innerText = 'ENCODING SELESAI!';
+                        logBox.innerText += '\n[BERHASIL] File siap diunduh!';
+
+                        const isMp4 = mimeType.includes('mp4');
+                        const ext = isMp4 ? 'mp4' : 'webm';
+
+                        btnDownload.href = downloadUrl;
+                        btnDownload.download = `VAGUE_${currentMode}_${selectedFile.name.split('.')[0]}.${ext}`;
+                        btnDownloadInner.innerText = `Unduh Hasil Render (${newSizeMB} MB)`;
+                        btnDownload.style.display = 'block';
+
+                        btnAction.disabled = false;
+                        btnAction.innerText = 'Selesai! Proses Video Lain';
+                        btnAction.style.background = '#ff7695';
+                    };
+
+                    videoEl.ontimeupdate = () => {
+                        if (videoEl.duration) {
+                            const pct = Math.min(Math.round((videoEl.currentTime / videoEl.duration) * 100), 100);
                             progressFill.style.width = pct + '%';
                             progressText.innerText = pct + '%';
-                            statusText.innerText = `ENCODING PROSES MP4 (${pct}%)...`;
-                        });
+                            statusText.innerText = `ENCODING PROSES (${pct}%)...`;
+                        }
+                    };
 
-                        ffmpeg.setLogger(({ type, message }) => {
-                            logBox.innerText += `[${type}] ${message}\n`;
-                            logBox.scrollTop = logBox.scrollHeight;
-                        });
+                    videoEl.onended = () => {
+                        mediaRecorder.stop();
+                        audioCtx.close();
+                    };
+
+                    logBox.innerText += '[System] Memulai pemutaran & perekaman frame...\n';
+                    mediaRecorder.start();
+                    await videoEl.play();
+
+                    // Loop drawing canvas
+                    function drawFrame() {
+                        if (!videoEl.paused && !videoEl.ended) {
+                            ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+                            requestAnimationFrame(drawFrame);
+                        }
                     }
-
-                    if (!ffmpeg.isLoaded()) {
-                        await ffmpeg.load();
-                    }
-
-                    statusText.innerText = 'MEMBACA FILE SINKRON...';
-                    logBox.innerText += 'Menyimpan file ke memori internal browser...\n';
-                    
-                    const ext = selectedFile.name.split('.').pop() || 'mp4';
-                    const inputFilename = `input.${ext}`;
-
-                    ffmpeg.FS('writeFile', inputFilename, await fetchFile(selectedFile));
-
-                    statusText.innerText = 'MENJALANKAN RENDER MP4...';
-                    logBox.innerText += 'Menjalankan x264 encoder...\n';
-
-                    let crfVal = '24';
-                    if (currentMode === 'FORGE') crfVal = '18';
-                    if (currentMode === 'NOVA') crfVal = '14';
-
-                    await ffmpeg.run(
-                        '-i', inputFilename,
-                        '-c:v', 'libx264',
-                        '-crf', crfVal,
-                        '-preset', 'ultrafast',
-                        '-c:a', 'aac',
-                        '-b:a', '128k',
-                        '-pix_fmt', 'yuv420p',
-                        'output.mp4'
-                    );
-
-                    statusText.innerText = 'MEMUAT OUTPUT...';
-                    const data = ffmpeg.FS('readFile', 'output.mp4');
-
-                    const blob = new Blob([data.buffer], { type: 'video/mp4' });
-                    const downloadUrl = URL.createObjectURL(blob);
-                    const newSizeMB = (blob.size / (1024 * 1024)).toFixed(2);
-
-                    progressFill.style.width = '100%';
-                    progressText.innerText = '100%';
-                    statusText.innerText = 'ENCODING MP4 SELESAI!';
-                    logBox.innerText += '\n[BERHASIL] File MP4 siap diunduh!';
-
-                    btnDownload.href = downloadUrl;
-                    btnDownload.download = `VAGUE_${currentMode}_${selectedFile.name.split('.')[0]}.mp4`;
-                    btnDownloadInner.innerText = `Unduh Hasil Render MP4 (${newSizeMB} MB)`;
-                    btnDownload.style.display = 'block';
-
-                    btnAction.disabled = false;
-                    btnAction.innerText = 'Selesai! Proses Video Lain';
-                    btnAction.style.background = '#ff7695';
-
-                    try {
-                        ffmpeg.FS('unlink', inputFilename);
-                        ffmpeg.FS('unlink', 'output.mp4');
-                    } catch(e) {}
+                    drawFrame();
 
                 } catch (err) {
                     console.error(err);
