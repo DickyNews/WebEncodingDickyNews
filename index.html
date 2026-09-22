@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VAGUE TRANSCODE - NATIVE ENGINE</title>
+    <title>VAGUE TRANSCODE - RATA KANAN MP4 ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- FFMPEG WASM v0.11.6 -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 
     <style>
         :root {
@@ -287,7 +290,7 @@
             background: var(--nova-color);
             height: 100%;
             width: 0%;
-            transition: width 0.1s linear;
+            transition: width 0.2s;
         }
 
         .log-box {
@@ -298,7 +301,7 @@
             padding: 8px;
             border-radius: 8px;
             margin-top: 8px;
-            max-height: 90px;
+            max-height: 120px;
             overflow-y: auto;
             white-space: pre-wrap;
         }
@@ -320,10 +323,6 @@
         .btn-teal { background: var(--teal-color); color: #121212; }
         .btn-green { background: var(--nova-color); color: #121212; }
 
-        video {
-            display: none;
-        }
-
         @media (max-width: 500px) {
             .method-grid { grid-template-columns: 1fr; }
             .title-text { font-size: 32px; }
@@ -340,11 +339,11 @@
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>NATIVE WEB ENGINE</span>
+                    <span>FFMPEG MP4 H.264 ENGINE</span>
                 </div>
             </div>
             <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                100% STABIL
+                PURE MP4
             </div>
         </div>
 
@@ -352,11 +351,11 @@
         <div class="neo-card">
             
             <div class="section-label">
-                <span class="badge-tag"></span> ENGINE STREAMING HARDWARE
+                <span class="badge-tag"></span> MESIN ENCODING MENTOK RATA KANAN
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Proses re-encoding video super cepat langsung dari GPU browser tanpa ketergantungan file eksternal.</p>
+            <p class="sub-desc">Proses re-encoding MP4 murni berbasis WebAssembly FFmpeg tanpa kompromi kualitas.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -378,8 +377,8 @@
             <!-- DETAIL MODE -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
-                <h4 id="mode-title">Vague Pulse (Bitrate: 2.5 Mbps)</h4>
-                <p id="mode-desc">Hasil ukuran super hemat dengan kecepatan render instan.</p>
+                <h4 id="mode-title">Vague Pulse (CRF 22 - Seimbang & Cepat)</h4>
+                <p id="mode-desc">Mengompresi video ke format MP4 dengan kualitas sangat baik dan ukuran lebih efisien.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
@@ -387,7 +386,7 @@
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
                 <div class="upload-text" id="upload-label">Klik untuk Memilih File Video</div>
-                <div class="upload-formats">BEBAS FORMAT & TANPA BATAS UKURAN FILE</div>
+                <div class="upload-formats">OUTPUT PASTI MP4 (H.264 + AAC)</div>
             </div>
 
             <!-- METADATA CARD -->
@@ -404,30 +403,30 @@
             <!-- PROGRESS & LOG -->
             <div class="progress-box" id="progress-box">
                 <div class="section-label" style="font-size: 10px; margin:0; justify-content: space-between;">
-                    <span id="status-text">MEMPROSES VIDEO...</span>
+                    <span id="status-text">MENYIAPKAN ENGINE...</span>
                     <span id="progress-text">0%</span>
                 </div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
-                <div class="log-box" id="log-box">Log pemrosesan akan tampil di sini...</div>
+                <div class="log-box" id="log-box">Log sistem pemrosesan FFmpeg...</div>
             </div>
 
             <!-- ACTION BUTTONS -->
             <button class="action-btn btn-pink" id="btn-action">Pilih Video Terlebih Dahulu</button>
-            <a id="btn-download" style="display:none;">
-                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode (.webm / .mp4)</button>
+            <a id="btn-download" style="display:none;" download="output.mp4">
+                <button class="action-btn btn-green" id="btn-download-inner">Unduh Hasil Encode MP4</button>
             </a>
-
-            <!-- HIDDEN VIDEO ELEMENT FOR PROCESSING -->
-            <video id="hidden-video" playsinline muted></video>
         </div>
 
     </div>
 
-    <!-- SCRIPT ENGINE NATIVE -->
+    <!-- SCRIPT ENGINE AKURAT -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const { createFFmpeg, fetchFile } = FFmpeg;
+            let ffmpeg = null;
+
             const btnPulse = document.querySelector('.method-btn.pulse');
             const btnForge = document.querySelector('.method-btn.forge');
             const btnNova = document.querySelector('.method-btn.nova');
@@ -440,7 +439,6 @@
             const btnAction = document.getElementById('btn-action');
             const btnDownload = document.getElementById('btn-download');
             const btnDownloadInner = document.getElementById('btn-download-inner');
-            const hiddenVideo = document.getElementById('hidden-video');
             
             const infoCard = document.getElementById('info-card');
             const progressBox = document.getElementById('progress-box');
@@ -450,10 +448,9 @@
             const logBox = document.getElementById('log-box');
 
             let selectedFile = null;
-            let currentBitrate = 2500000; // 2.5 Mbps
             let currentMode = 'PULSE';
 
-            function setActiveMode(selectedBtn, modeName, bitrate, title, desc) {
+            function setActiveMode(selectedBtn, modeName, title, desc) {
                 [btnPulse, btnForge, btnNova].forEach(btn => {
                     btn.classList.remove('active');
                     const badge = btn.querySelector('.badge-aktif');
@@ -464,21 +461,20 @@
                 selectedBtn.insertAdjacentHTML('beforeend', '<span class="badge-aktif">AKTIF</span>');
                 
                 currentMode = modeName;
-                currentBitrate = bitrate;
                 modeTitle.innerText = title;
                 modeDesc.innerText = desc;
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 2500000, 'Vague Pulse (Bitrate: 2.5 Mbps)', 'Hasil ukuran super hemat dengan kecepatan render instan.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (CRF 22 - Standard HD)', 'Mengompresi video ke format MP4 dengan kualitas sangat baik dan ukuran lebih efisien.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 6000000, 'Vague Forge (Bitrate: 6.0 Mbps)', 'Seimbang antara ukuran file dan kejelasan detail gambar.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (CRF 17 - High Quality)', 'Kualitas visual jernih setara Master Record tanpa pikselasi.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 12000000, 'Vague Nova (Bitrate: 12 Mbps MAX)', 'Render bit-rate tinggi tanpa kehilangan kejelasan detail.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (CRF 12 - RATA KANAN MENTOK)', 'Render visual tanpa kehilangan ketajaman (Lossless visually). Ukuran file lebih besar.');
             });
 
             dropZone.addEventListener('click', () => videoInput.click());
@@ -501,92 +497,140 @@
                     document.getElementById('meta-size').innerText = sizeMB + ' MB';
                     document.getElementById('meta-type').innerText = file.type || 'video/mp4';
 
-                    hiddenVideo.src = URL.createObjectURL(file);
-                    hiddenVideo.onloadedmetadata = function() {
-                        document.getElementById('meta-res').innerText = `${hiddenVideo.videoWidth} x ${hiddenVideo.videoHeight}`;
-                        document.getElementById('meta-duration').innerText = `${Math.round(hiddenVideo.duration)} Detik`;
+                    const tempVideo = document.createElement('video');
+                    tempVideo.preload = 'metadata';
+                    tempVideo.src = URL.createObjectURL(file);
+                    tempVideo.onloadedmetadata = function() {
+                        window.URL.revokeObjectURL(tempVideo.src);
+                        document.getElementById('meta-res').innerText = `${tempVideo.videoWidth} x ${tempVideo.videoHeight}`;
+                        document.getElementById('meta-duration').innerText = `${Math.round(tempVideo.duration)} Detik`;
                         infoCard.style.display = 'block';
                     };
 
-                    btnAction.innerText = `Mulai Enkode (${currentMode}) Sekarang`;
+                    btnAction.innerText = `Mulai Enkode MP4 (${currentMode})`;
                     btnAction.style.background = '#2ed5c3';
                     btnDownload.style.display = 'none';
                 }
             });
 
-            function processEncoding() {
-                btnAction.disabled = true;
-                btnAction.innerText = 'Memproses Encoding...';
-                progressBox.style.display = 'block';
-                btnDownload.style.display = 'none';
-                logBox.innerText = '[NATIVE ENGINE] Menginisialisasi Stream Media...\n';
+            async function loadFFmpeg() {
+                if (ffmpeg) return ffmpeg;
 
-                const stream = hiddenVideo.captureStream ? hiddenVideo.captureStream() : hiddenVideo.mozCaptureStream();
-                
-                let mimeType = 'video/webm;codecs=vp9';
-                if (!MediaRecorder.isTypeSupported(mimeType)) {
-                    mimeType = 'video/webm;codecs=vp8';
-                    if (!MediaRecorder.isTypeSupported(mimeType)) {
-                        mimeType = 'video/webm';
-                    }
-                }
+                logBox.innerText += '[1/3] Mengunduh modul FFmpeg Core...\n';
 
-                logBox.innerText += `[CODEC] Menggunakan: ${mimeType}\n`;
-                logBox.innerText += `[BITRATE] Target: ${(currentBitrate/1000000).toFixed(1)} Mbps\n`;
+                // Trik Bypass CORS GitHub Pages menggunakan Blob Injection
+                const coreResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js');
+                let coreScript = await coreResponse.text();
 
-                const mediaRecorder = new MediaRecorder(stream, {
-                    mimeType: mimeType,
-                    videoBitsPerSecond: currentBitrate
+                // Replace Worker URL internal agar diload via Blob lokal (Anti-CORS)
+                const workerResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.worker.js');
+                const workerBlob = new Blob([await workerResponse.text()], { type: 'text/javascript' });
+                const workerUrl = URL.createObjectURL(workerBlob);
+
+                coreScript = coreScript.replace('ffmpeg-core.worker.js', workerUrl);
+
+                const coreBlob = new Blob([coreScript], { type: 'text/javascript' });
+                const coreUrl = URL.createObjectURL(coreBlob);
+
+                ffmpeg = createFFmpeg({
+                    log: true,
+                    corePath: coreUrl,
+                    wasmPath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.wasm'
                 });
 
-                const chunks = [];
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data.size > 0) chunks.push(e.data);
-                };
+                ffmpeg.setProgress(({ ratio }) => {
+                    const pct = Math.min(Math.max(Math.round(ratio * 100), 0), 100);
+                    progressFill.style.width = pct + '%';
+                    progressText.innerText = pct + '%';
+                    statusText.innerText = `ENCODING PROSES MP4 (${pct}%)...`;
+                });
 
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'video/webm' });
+                ffmpeg.setLogger(({ type, message }) => {
+                    logBox.innerText += `[${type}] ${message}\n`;
+                    logBox.scrollTop = logBox.scrollHeight;
+                });
+
+                await ffmpeg.load();
+                return ffmpeg;
+            }
+
+            async function processEncoding() {
+                btnAction.disabled = true;
+                btnAction.innerText = 'Memuat Engine FFmpeg WASM...';
+                progressBox.style.display = 'block';
+                btnDownload.style.display = 'none';
+                logBox.innerText = 'Memulai proses inisialisasi...\n';
+
+                try {
+                    const instance = await loadFFmpeg();
+
+                    statusText.innerText = 'MEMBACA FILE SINKRON...';
+                    logBox.innerText += '[2/3] Menyimpan file ke Virtual Memory...\n';
+                    
+                    const inputExt = selectedFile.name.split('.').pop() || 'mp4';
+                    const inputName = `input.${inputExt}`;
+                    
+                    instance.FS('writeFile', inputName, await fetchFile(selectedFile));
+
+                    statusText.innerText = 'MENJALANKAN RENDER MP4...';
+                    logBox.innerText += '[3/3] Menjalankan perintah FFmpeg H.264...\n';
+
+                    // Pengaturan CRF (Lower CRF = Higher Quality / Mentok Rata Kanan)
+                    let crfValue = '22';
+                    let presetValue = 'ultrafast';
+
+                    if (currentMode === 'FORGE') {
+                        crfValue = '17';
+                    } else if (currentMode === 'NOVA') {
+                        crfValue = '12'; // Rata kanan visual mentok
+                    }
+
+                    // Command FFmpeg murni output MP4 (H.264 + AAC)
+                    await instance.run(
+                        '-i', inputName,
+                        '-c:v', 'libx264',
+                        '-crf', crfValue,
+                        '-preset', presetValue,
+                        '-c:a', 'aac',
+                        '-b:a', '192k',
+                        '-pix_fmt', 'yuv420p',
+                        'output.mp4'
+                    );
+
+                    statusText.innerText = 'MEMUAT HASIL RENDER...';
+                    const data = instance.FS('readFile', 'output.mp4');
+
+                    const blob = new Blob([data.buffer], { type: 'video/mp4' });
                     const downloadUrl = URL.createObjectURL(blob);
                     const newSizeMB = (blob.size / (1024 * 1024)).toFixed(2);
 
                     progressFill.style.width = '100%';
                     progressText.innerText = '100%';
                     statusText.innerText = 'ENCODING SELESAI!';
-                    logBox.innerText += '\n[BERHASIL] File siap diunduh.';
+                    logBox.innerText += '\n[BERHASIL] Video MP4 Rata Kanan Siap Diunduh!';
 
                     btnDownload.href = downloadUrl;
-                    btnDownload.download = `VAGUE_${currentMode}_${selectedFile.name.split('.')[0]}.webm`;
-                    btnDownloadInner.innerText = `Unduh Hasil Render (${newSizeMB} MB)`;
+                    btnDownload.download = `VAGUE_${currentMode}_${selectedFile.name.split('.')[0]}.mp4`;
+                    btnDownloadInner.innerText = `Unduh Hasil Render MP4 (${newSizeMB} MB)`;
                     btnDownload.style.display = 'block';
 
                     btnAction.disabled = false;
-                    btnAction.innerText = 'Selesai! Proses Video Lain';
+                    btnAction.innerText = 'Selesai! Process Video Lain';
                     btnAction.style.background = '#ff7695';
-                };
 
-                hiddenVideo.currentTime = 0;
-                hiddenVideo.playbackRate = 2.0; // Render 2x lebih cepat
-                
-                hiddenVideo.ontimeupdate = () => {
-                    if (hiddenVideo.duration) {
-                        const pct = Math.min(Math.round((hiddenVideo.currentTime / hiddenVideo.duration) * 100), 100);
-                        progressFill.style.width = pct + '%';
-                        progressText.innerText = pct + '%';
-                        statusText.innerText = `RENDERING HASIL (${pct}%)...`;
-                    }
-                };
+                    // Clean Virtual File System
+                    try {
+                        instance.FS('unlink', inputName);
+                        instance.FS('unlink', 'output.mp4');
+                    } catch(e) {}
 
-                hiddenVideo.onended = () => {
-                    mediaRecorder.stop();
-                    hiddenVideo.playbackRate = 1.0;
-                };
-
-                mediaRecorder.start(100);
-                hiddenVideo.play().catch(err => {
-                    logBox.innerText += '\n[ERROR] Gagal memutar stream: ' + err.message;
+                } catch (err) {
+                    console.error(err);
+                    statusText.innerText = 'Terjadi Kesalahan!';
+                    logBox.innerText += '\n[ERROR] ' + err.message;
                     btnAction.disabled = false;
                     btnAction.innerText = 'Coba Lagi';
-                });
+                }
             }
         });
     </script>
