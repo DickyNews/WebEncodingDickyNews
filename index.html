@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VAGUE TRANSCODE - RATA KANAN MP4 ENGINE</title>
     
+    <!-- 1. BYPASS COOP/COEP SECURITY GITHUB PAGES (WAJIB DI ATAS HEAD) -->
+    <script src="https://cdn.jsdelivr.net/gh/gzuidhof/coi-serviceworker@0.1.7/coi-serviceworker.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- FFMPEG WASM v0.11.6 -->
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <!-- FFMPEG WASM v0.10.1 (SINGLE/MULTI-THREAD AUTO HANDLED) -->
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
 
     <style>
         :root {
@@ -339,11 +342,11 @@
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>FFMPEG MP4 H.264 ENGINE</span>
+                    <span>BYPASS SECURITY ENGINE</span>
                 </div>
             </div>
             <div class="section-label" style="margin:0; font-size:10px; background:#bbf246; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                PURE MP4
+                COOP/COEP ACTIVE
             </div>
         </div>
 
@@ -351,11 +354,11 @@
         <div class="neo-card">
             
             <div class="section-label">
-                <span class="badge-tag"></span> MESIN ENCODING MENTOK RATA KANAN
+                <span class="badge-tag"></span> MESIN ENCODING MP4 RATA KANAN
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">Proses re-encoding MP4 murni berbasis WebAssembly FFmpeg tanpa kompromi kualitas.</p>
+            <p class="sub-desc">FFmpeg WASM murni MP4 H.264 dengan Bypass Header Keamanan.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -377,8 +380,8 @@
             <!-- DETAIL MODE -->
             <div class="active-info">
                 <div class="section-label" style="font-size: 10px; margin:0;">MODE MESIN</div>
-                <h4 id="mode-title">Vague Pulse (CRF 22 - Seimbang & Cepat)</h4>
-                <p id="mode-desc">Mengompresi video ke format MP4 dengan kualitas sangat baik dan ukuran lebih efisien.</p>
+                <h4 id="mode-title">Vague Pulse (CRF 22 - Fast 1080p)</h4>
+                <p id="mode-desc">Proses kompresi cepat, hasil tajam dan ukuran efisien.</p>
             </div>
 
             <!-- UPLOAD ZONE -->
@@ -386,7 +389,7 @@
                 <input type="file" id="video-input" style="display:none;" accept="video/*">
                 <div class="upload-icon"><i class="fa-solid fa-plus"></i></div>
                 <div class="upload-text" id="upload-label">Klik untuk Memilih File Video</div>
-                <div class="upload-formats">OUTPUT PASTI MP4 (H.264 + AAC)</div>
+                <div class="upload-formats">BEBAS FORMAT & PASTI MP4 H.264</div>
             </div>
 
             <!-- METADATA CARD -->
@@ -409,7 +412,7 @@
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
-                <div class="log-box" id="log-box">Log sistem pemrosesan FFmpeg...</div>
+                <div class="log-box" id="log-box">Status pemrosesan FFmpeg...</div>
             </div>
 
             <!-- ACTION BUTTONS -->
@@ -421,7 +424,7 @@
 
     </div>
 
-    <!-- SCRIPT ENGINE AKURAT -->
+    <!-- SCRIPT ENGINE -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const { createFFmpeg, fetchFile } = FFmpeg;
@@ -466,15 +469,15 @@
             }
 
             btnPulse.addEventListener('click', () => {
-                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (CRF 22 - Standard HD)', 'Mengompresi video ke format MP4 dengan kualitas sangat baik dan ukuran lebih efisien.');
+                setActiveMode(btnPulse, 'PULSE', 'Vague Pulse (CRF 22 - Fast 1080p)', 'Proses kompresi cepat, hasil tajam dan ukuran efisien.');
             });
 
             btnForge.addEventListener('click', () => {
-                setActiveMode(btnForge, 'FORGE', 'Vague Forge (CRF 17 - High Quality)', 'Kualitas visual jernih setara Master Record tanpa pikselasi.');
+                setActiveMode(btnForge, 'FORGE', 'Vague Forge (CRF 17 - High Visual Quality)', 'Kualitas visual jernih tinggi dengan tingkat kompresi minimal.');
             });
 
             btnNova.addEventListener('click', () => {
-                setActiveMode(btnNova, 'NOVA', 'Vague Nova (CRF 12 - RATA KANAN MENTOK)', 'Render visual tanpa kehilangan ketajaman (Lossless visually). Ukuran file lebih besar.');
+                setActiveMode(btnNova, 'NOVA', 'Vague Nova (CRF 12 - RATA KANAN MENTOK)', 'Render tanpa kompromi detail visual. Hasil ultra jernih.');
             });
 
             dropZone.addEventListener('click', () => videoInput.click());
@@ -507,98 +510,71 @@
                         infoCard.style.display = 'block';
                     };
 
-                    btnAction.innerText = `Mulai Enkode MP4 (${currentMode})`;
+                    btnAction.innerText = `Mulai Enkode (${currentMode}) MP4`;
                     btnAction.style.background = '#2ed5c3';
                     btnDownload.style.display = 'none';
                 }
             });
 
-            async function loadFFmpeg() {
-                if (ffmpeg) return ffmpeg;
-
-                logBox.innerText += '[1/3] Mengunduh modul FFmpeg Core...\n';
-
-                // Trik Bypass CORS GitHub Pages menggunakan Blob Injection
-                const coreResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js');
-                let coreScript = await coreResponse.text();
-
-                // Replace Worker URL internal agar diload via Blob lokal (Anti-CORS)
-                const workerResponse = await fetch('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.worker.js');
-                const workerBlob = new Blob([await workerResponse.text()], { type: 'text/javascript' });
-                const workerUrl = URL.createObjectURL(workerBlob);
-
-                coreScript = coreScript.replace('ffmpeg-core.worker.js', workerUrl);
-
-                const coreBlob = new Blob([coreScript], { type: 'text/javascript' });
-                const coreUrl = URL.createObjectURL(coreBlob);
-
-                ffmpeg = createFFmpeg({
-                    log: true,
-                    corePath: coreUrl,
-                    wasmPath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.wasm'
-                });
-
-                ffmpeg.setProgress(({ ratio }) => {
-                    const pct = Math.min(Math.max(Math.round(ratio * 100), 0), 100);
-                    progressFill.style.width = pct + '%';
-                    progressText.innerText = pct + '%';
-                    statusText.innerText = `ENCODING PROSES MP4 (${pct}%)...`;
-                });
-
-                ffmpeg.setLogger(({ type, message }) => {
-                    logBox.innerText += `[${type}] ${message}\n`;
-                    logBox.scrollTop = logBox.scrollHeight;
-                });
-
-                await ffmpeg.load();
-                return ffmpeg;
-            }
-
             async function processEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Memuat Engine FFmpeg WASM...';
+                btnAction.innerText = 'Memuat FFmpeg Engine...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Memulai proses inisialisasi...\n';
+                logBox.innerText = 'Memuat modul FFmpeg WASM...\n';
 
                 try {
-                    const instance = await loadFFmpeg();
+                    if (!ffmpeg) {
+                        ffmpeg = createFFmpeg({
+                            log: true,
+                            corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'
+                        });
 
-                    statusText.innerText = 'MEMBACA FILE SINKRON...';
-                    logBox.innerText += '[2/3] Menyimpan file ke Virtual Memory...\n';
-                    
-                    const inputExt = selectedFile.name.split('.').pop() || 'mp4';
-                    const inputName = `input.${inputExt}`;
-                    
-                    instance.FS('writeFile', inputName, await fetchFile(selectedFile));
+                        ffmpeg.setProgress(({ ratio }) => {
+                            const pct = Math.min(Math.max(Math.round(ratio * 100), 0), 100);
+                            progressFill.style.width = pct + '%';
+                            progressText.innerText = pct + '%';
+                            statusText.innerText = `ENCODING PROSES MP4 (${pct}%)...`;
+                        });
 
-                    statusText.innerText = 'MENJALANKAN RENDER MP4...';
-                    logBox.innerText += '[3/3] Menjalankan perintah FFmpeg H.264...\n';
-
-                    // Pengaturan CRF (Lower CRF = Higher Quality / Mentok Rata Kanan)
-                    let crfValue = '22';
-                    let presetValue = 'ultrafast';
-
-                    if (currentMode === 'FORGE') {
-                        crfValue = '17';
-                    } else if (currentMode === 'NOVA') {
-                        crfValue = '12'; // Rata kanan visual mentok
+                        ffmpeg.setLogger(({ type, message }) => {
+                            logBox.innerText += `[${type}] ${message}\n`;
+                            logBox.scrollTop = logBox.scrollHeight;
+                        });
                     }
 
-                    // Command FFmpeg murni output MP4 (H.264 + AAC)
-                    await instance.run(
-                        '-i', inputName,
+                    if (!ffmpeg.isLoaded()) {
+                        await ffmpeg.load();
+                    }
+
+                    statusText.innerText = 'MEMBACA FILE SINKRON...';
+                    logBox.innerText += 'Menyimpan file ke memori internal browser...\n';
+                    
+                    const ext = selectedFile.name.split('.').pop() || 'mp4';
+                    const inputFilename = `input.${ext}`;
+
+                    ffmpeg.FS('writeFile', inputFilename, await fetchFile(selectedFile));
+
+                    statusText.innerText = 'MENJALANKAN RENDER MP4...';
+                    logBox.innerText += 'Menjalankan x264 encoder...\n';
+
+                    let crfVal = '22';
+                    if (currentMode === 'FORGE') crfVal = '17';
+                    if (currentMode === 'NOVA') crfVal = '12';
+
+                    await ffmpeg.run(
+                        '-i', inputFilename,
                         '-c:v', 'libx264',
-                        '-crf', crfValue,
-                        '-preset', presetValue,
+                        '-crf', crfVal,
+                        '-preset', 'ultrafast',
                         '-c:a', 'aac',
                         '-b:a', '192k',
                         '-pix_fmt', 'yuv420p',
                         'output.mp4'
                     );
 
-                    statusText.innerText = 'MEMUAT HASIL RENDER...';
-                    const data = instance.FS('readFile', 'output.mp4');
+                    statusText.innerText = 'MEMUAT OUTPUT...';
+                    const data = ffmpeg.FS('readFile', 'output.mp4');
 
                     const blob = new Blob([data.buffer], { type: 'video/mp4' });
                     const downloadUrl = URL.createObjectURL(blob);
@@ -606,8 +582,8 @@
 
                     progressFill.style.width = '100%';
                     progressText.innerText = '100%';
-                    statusText.innerText = 'ENCODING SELESAI!';
-                    logBox.innerText += '\n[BERHASIL] Video MP4 Rata Kanan Siap Diunduh!';
+                    statusText.innerText = 'ENCODING MP4 SELESAI!';
+                    logBox.innerText += '\n[BERHASIL] File MP4 siap diunduh!';
 
                     btnDownload.href = downloadUrl;
                     btnDownload.download = `VAGUE_${currentMode}_${selectedFile.name.split('.')[0]}.mp4`;
@@ -615,13 +591,13 @@
                     btnDownload.style.display = 'block';
 
                     btnAction.disabled = false;
-                    btnAction.innerText = 'Selesai! Process Video Lain';
+                    btnAction.innerText = 'Selesai! Proses Video Lain';
                     btnAction.style.background = '#ff7695';
 
-                    // Clean Virtual File System
+                    // Cleanup memory
                     try {
-                        instance.FS('unlink', inputName);
-                        instance.FS('unlink', 'output.mp4');
+                        ffmpeg.FS('unlink', inputFilename);
+                        ffmpeg.FS('unlink', 'output.mp4');
                     } catch(e) {}
 
                 } catch (err) {
