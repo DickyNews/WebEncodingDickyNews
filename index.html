@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Impact&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- FFMPEG WASM v0.10.1 -->
+    <!-- FFMPEG WASM v0.10.1 LIBRARY -->
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
 
     <style>
@@ -339,11 +339,11 @@
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
                 <div class="logo-text">
                     <h2>VAGUE</h2>
-                    <span>STABLE ENGINE ONLINE</span>
+                    <span>STABLE ENGINE v10</span>
                 </div>
             </div>
             <div class="section-label" style="margin:0; font-size:10px; background:#2ed5c3; padding:4px 8px; border-radius:8px; border:2px solid #121212;">
-                STABLE MODE
+                READY
             </div>
         </div>
 
@@ -355,7 +355,7 @@
             </div>
             
             <h1 class="title-text">TRANSCODE VIDEO.</h1>
-            <p class="sub-desc">FFmpeg WASM Single-Thread Engine (Garansi Bebas Crash & Error Header).</p>
+            <p class="sub-desc">Proses Video MP4 H.264 Langsung di Browser Tanpa Error.</p>
 
             <!-- PILIH MODE -->
             <div class="method-grid">
@@ -515,17 +515,17 @@
 
             async function processEncoding() {
                 btnAction.disabled = true;
-                btnAction.innerText = 'Memuat Stable FFmpeg Engine...';
+                btnAction.innerText = 'Memuat FFmpeg Engine...';
                 progressBox.style.display = 'block';
                 btnDownload.style.display = 'none';
-                logBox.innerText = 'Inisialisasi core FFmpeg Single-Thread...\n';
+                logBox.innerText = 'Inisialisasi core FFmpeg 0.10.0...\n';
 
                 try {
                     if (!ffmpeg) {
-                        // Menggunakan Core ST (Single Thread) yang tidak butuh COOP/COEP
+                        // Pasangan kompatibel 100%: JS v0.10.1 + Core v0.10.0
                         ffmpeg = createFFmpeg({
                             log: true,
-                            corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js'
+                            corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js'
                         });
 
                         ffmpeg.setProgress(({ ratio }) => {
